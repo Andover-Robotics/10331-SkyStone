@@ -15,7 +15,7 @@ public class Test extends LinearOpMode {
 
         while (opModeIsActive()) {
             hueVal = test.argb();
-            if (hueVal <= 40 && hueVal >= 80) {
+            if (hueVal >= 40 && hueVal <= 80) {
                 telemetry.addData("Hue: ", hueVal);
 
                 //test commit (Rishika)
