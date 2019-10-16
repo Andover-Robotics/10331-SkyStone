@@ -73,7 +73,8 @@ public class TeleOp extends OpMode
         // step (using the FTC Robot Controller app on the phone).
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        leftFlywheel = hardwareMap.get(DcMotor.class, "left_Flywheel");
+        leftFlywheel = hardwareMap.get(DcMotor.class, "left_flywheel");
+        rightFlywheel = hardwareMap.get(DcMotor.class, "right_flywheel");
 
 
         // Most robots need the motor on one side to be reversed to drive forward
