@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
-public class Test extends LinearOpMode {
+public class Auto extends LinearOpMode {
     //Really basic impl. of color sensor -- not an algorithmic implementation by any means
     @Override
     public void runOpMode() {
