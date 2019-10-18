@@ -3,18 +3,21 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
-public class Test extends LinearOpMode {
-    //Really basic impl. of color sensor -- not an algorithmic implementation by any means
+public class Auto extends LinearOpMode {
+
     @Override
     public void runOpMode() {
-        ColorSensor test;
-        test = hardwareMap.get(ColorSensor.class,"color_sensor");
+        ColorSensor color_sensor;
+        color_sensor = hardwareMap.get(ColorSensor.class,"color_sensor");
 
         int hueVal;
+        double alphaVal;
+        boolean skyStone = false;
         waitForStart();
 
         while (opModeIsActive()) {
-            hueVal = test.argb();
+            hueVal = color_sensor.argb();
+            alphaVal = color_sensor.alpha();
             if (hueVal >= 40 && hueVal <= 80) {
                 telemetry.addData("Hue: ", "Yellow");
 
@@ -22,6 +25,9 @@ public class Test extends LinearOpMode {
                 //test commit (Rishika)
                 //test commit (Madeline)
                 //test commit (Emily)
+            }
+            if (alphaVal <= 0.1) {
+                skyStone = true;
             }
         }
 
