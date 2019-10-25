@@ -93,6 +93,12 @@ public class TeleOp extends OpMode
         leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
         rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        // Flywheels move backwards to move blocks inward
+        rightFrontFlywheel.setDirection(DcMotor.Direction.REVERSE);
+        rightBackFlywheel.setDirection(DcMotor.Direction.REVERSE);
+        leftBackFlywheel.setDirection(DcMotor.Direction.REVERSE);
+        leftFrontFlywheel.setDirection(DcMotor.Direction.REVERSE);
+
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
