@@ -38,8 +38,8 @@ android {
 
     defaultConfig {
         applicationId 'com.qualcomm.ftcrobotcontroller'
-        minSdkVersion 24//was 19
-        targetSdkVersion 28//was 29
+        minSdkVersion 19
+        targetSdkVersion 26
         multiDexEnabled false
 
         /**
@@ -92,8 +92,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 
     sourceSets.main {
