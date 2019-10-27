@@ -24,7 +24,6 @@ dependencies {
     extremeTurboImplementation project(':Hardware')
     extremeTurboImplementation project(':RobotCore')
     extremeTurboImplementation project(':FtcCommon')
-<<<<<<< HEAD
 
     stockImplementation 'org.openftc:hardware-stock:5.2'
     stockImplementation 'org.openftc:robotcore-stock:5.2'
@@ -32,6 +31,4 @@ dependencies {
 }
 repositories {
     mavenCentral()
-=======
->>>>>>> 47a6b6fca2b190a5862f65378be4bc34c85981a9
 }
