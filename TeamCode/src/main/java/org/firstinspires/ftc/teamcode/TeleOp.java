@@ -61,8 +61,10 @@ public class TeleOp extends OpMode
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
     //NEW FLYWHEELS
-    private DcMotor leftFlywheel = null;
-    private DcMotor rightFlywheel = null;
+    private DcMotor leftFrontFlywheel = null;
+    private DcMotor rightFrontFlywheel = null;
+    private DcMotor rightBackFlywheel = null;
+    private DcMotor leftBackFlywheel = null;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -79,8 +81,10 @@ public class TeleOp extends OpMode
         rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
 
-        leftFlywheel = hardwareMap.get(DcMotor.class, "left_flywheel");
-        rightFlywheel = hardwareMap.get(DcMotor.class, "right_flywheel");
+        leftFrontFlywheel = hardwareMap.get(DcMotor.class, "left_front_flywheel");
+        leftBackFlywheel = hardwareMap.get(DcMotor.class, "left_back_flywheel");
+        rightFrontFlywheel = hardwareMap.get(DcMotor.class, "right_front_flywheel");
+        rightBackFlywheel = hardwareMap.get(DcMotor.class, "right_back_flywheel");
 
 
         // Most robots need the motor on one side to be reversed to drive forward
@@ -89,6 +93,12 @@ public class TeleOp extends OpMode
         leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
         rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        // Flywheels move backwards to move blocks inward
+        rightFrontFlywheel.setDirection(DcMotor.Direction.REVERSE);
+        rightBackFlywheel.setDirection(DcMotor.Direction.REVERSE);
+        leftBackFlywheel.setDirection(DcMotor.Direction.REVERSE);
+        leftFrontFlywheel.setDirection(DcMotor.Direction.REVERSE);
+
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
