@@ -65,6 +65,9 @@ public class TeleOp extends OpMode
     private DcMotor rightFrontFlywheel = null;
     private DcMotor rightBackFlywheel = null;
     private DcMotor leftBackFlywheel = null;
+    // boolean to see if Flywheels are running
+    private boolean runFrontFlywheels = false;
+    private boolean runBackFlywheels = false;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -85,6 +88,8 @@ public class TeleOp extends OpMode
         leftBackFlywheel = hardwareMap.get(DcMotor.class, "left_back_flywheel");
         rightFrontFlywheel = hardwareMap.get(DcMotor.class, "right_front_flywheel");
         rightBackFlywheel = hardwareMap.get(DcMotor.class, "right_back_flywheel");
+
+
 
 
         // Most robots need the motor on one side to be reversed to drive forward
@@ -141,6 +146,35 @@ public class TeleOp extends OpMode
         rightbackPower   = Range.clip(drive - turn, -1.0, -1.0) ;
         leftfrontPower = Range.clip(drive + turn, -1.0, 1.0) ;
         rightfrontPower = Range.clip(drive - turn, -1.0, -1.0) ;
+
+        //when 'a' button is pressed and front flywheels are not running, set bool to true
+        if(gamepad1.a && !runFrontFlywheels) {
+            runFrontFlywheels = true;
+            // when 'a' button is pressed and front flywheels are running, set bool to false
+        } else if(gamepad1.a && runFrontFlywheels) {
+            runFrontFlywheels = false;
+        }
+
+        //run flywheels at full power when bool true
+        if(runFrontFlywheels) {
+            leftFrontFlywheel.setPower(1);
+            rightFrontFlywheel.setPower(1);
+        }
+
+        //when 'b' button is pressed and back flywheels are not running, set bool to true
+        if(gamepad1.b && !runBackFlywheels) {
+            runBackFlywheels = true;
+            // when 'b' button is pressed and back flywheels are running, set bool to false
+        } else if(gamepad1.b && runBackFlywheels) {
+            runBackFlywheels = false;
+        }
+
+        //run flywheels at full power when bool true
+        if(runBackFlywheels) {
+            leftBackFlywheel.setPower(1);
+            rightBackFlywheel.setPower(1);
+        }
+
 
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
