@@ -154,8 +154,10 @@ public class TeleOp extends OpMode
 
         // Send calculated power to wheels
 
-        //leftDrive.setPower(leftPower);
-        //rightDrive.setPower(rightPower);
+        leftBackDrive.setPower(leftbackPower);
+        rightBackDrive.setPower(rightbackPower);
+        leftFrontDrive.setPower(leftfrontPower);
+        rightFrontDrive.setPower(rightfrontPower);
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
