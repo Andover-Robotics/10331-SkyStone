@@ -145,7 +145,7 @@ public class TeleOp extends OpMode
         double strafe = gamepad1.left_stick_x;
 
         //all wheels turning inwards = strafe left,
-        //all wheels turning outwards = strafe right;
+        //all wheels turning outwards = strafe right,
 
         leftbackPower    = Range.clip(drive + turn - strafe, -1.0, 1.0) ;
         rightbackPower   = Range.clip(drive - turn - strafe, -1.0, 1.0) ;
