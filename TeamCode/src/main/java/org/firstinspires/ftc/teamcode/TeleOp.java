@@ -146,6 +146,7 @@ public class TeleOp extends OpMode
 
         //all wheels turning inwards = strafe left,
         //all wheels turning outwards = strafe right,
+        //test
 
         leftbackPower    = Range.clip(drive + turn - strafe, -1.0, 1.0) ;
         rightbackPower   = Range.clip(drive - turn - strafe, -1.0, 1.0) ;
