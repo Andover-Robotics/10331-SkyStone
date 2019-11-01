@@ -29,8 +29,15 @@ public class Auto extends LinearOpMode {
             if (alphaVal <= 0.1) {
                 skyStone = true;
             }
-        }
 
+
+
+            //dividing line
+
+
+
+
+        }
     }
 
 }
