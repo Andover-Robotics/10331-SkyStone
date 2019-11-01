@@ -2,29 +2,46 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController; // this is for the controller
 public class Auto extends LinearOpMode {
+
+    private DcMotor leftFrontDrive = null;
+    private DcMotor leftBackDrive = null;
+    private DcMotor rightFrontDrive = null;
+    private DcMotor rightBackDrive = null;
+    //NEW FLYWHEELS
+    private DcMotor leftFrontFlywheel = null;
+    private DcMotor rightFrontFlywheel = null;
+    private DcMotor rightBackFlywheel = null;
+    private DcMotor leftBackFlywheel = null;
 
     @Override
     public void runOpMode() {
         ColorSensor color_sensor;
         color_sensor = hardwareMap.get(ColorSensor.class,"color_sensor");
-         DcMotorController leftFrontDrive;
-         DcMotorController rightFrontDrive;
-         DcMotorController leftBackDrive;
-         DcMotorController rightBackDrive;
-         DcMotorController leftFrontFlywheel;
-         DcMotorController rightFrontFlywheel;
-         DcMotorController leftBackFlywheel;
-         DcMotorController rightBackFlywheel;
+        leftFrontDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
+        leftBackDrive = hardwareMap.get(DcMotor.class, "left_back_drive");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
+        rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
+        leftFrontFlywheel = hardwareMap.get(DcMotor.class, "left_front_flywheel");
+        leftBackFlywheel = hardwareMap.get(DcMotor.class, "left_back_flywheel");
+        rightFrontFlywheel = hardwareMap.get(DcMotor.class, "right_front_flywheel");
+        rightBackFlywheel = hardwareMap.get(DcMotor.class, "right_back_flywheel");
 
         int hueVal;
         double alphaVal;
         boolean skyStone = false;
+        boolean parkedOverLine = false;
+        double stoneLength = 20;
         waitForStart();
         int amtSkyStone = 0;
         //given number of tick (from the specific  motor)  per revolution
         //each encoder is different
+
+        double flywheel = 15.95;
+
+        double test = findTotalTicks(1120, 32, 20);
 
         while (opModeIsActive()) {
             hueVal = color_sensor.argb();
@@ -65,10 +82,33 @@ public class Auto extends LinearOpMode {
 
             //dividing line
 
-
-
-
+            while (!parkedOverLine) {
+                leftFrontDrive.setTargetPosition((int)test);
+                leftBackDrive.setTargetPosition((int)test);
+                rightFrontDrive.setTargetPosition((int)test);
+                rightBackDrive.setTargetPosition((int)test);
+            }
         }
     }
+
+    public static double findTotalTicks(int ticksPerRev, double circumference, double intendedDist) {
+
+
+        double amtOfWheelUsed = intendedDist/circumference;
+
+        double degrees = amtOfWheelUsed * 360;
+
+        double finalTicks = degrees*ticksPerRev/360;
+
+        /*
+
+        225/360 = x/1120
+        x = 700
+
+         */
+
+        return finalTicks;
+    }
+
 
 }
