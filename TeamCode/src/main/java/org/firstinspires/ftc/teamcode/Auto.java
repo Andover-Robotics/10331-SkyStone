@@ -87,6 +87,7 @@ public class Auto extends LinearOpMode {
                 leftBackDrive.setTargetPosition((int)test);
                 rightFrontDrive.setTargetPosition((int)test);
                 rightBackDrive.setTargetPosition((int)test);
+                //if we need to turn, set the left wheels to negative
             }
         }
     }
@@ -109,6 +110,7 @@ public class Auto extends LinearOpMode {
 
         return finalTicks;
     }
+
 
 
 }
