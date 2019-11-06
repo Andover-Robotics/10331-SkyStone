@@ -12,6 +12,7 @@ public class Auto extends LinearOpMode {
     //NEW FLYWHEELS
     private DcMotor leftFrontFlywheel, leftBackFlywheel, rightFrontFlywheel, rightBackFlywheel;
     private MecanumDrive driveTrain;
+    public enum SkyStoneStatus {NO_STONE, STONE, SKYSTONE};
     @Override
     public void runOpMode() {
         ColorSensor color_sensor;
@@ -34,8 +35,11 @@ public class Auto extends LinearOpMode {
         boolean parkedOverLine = false;
         double stoneLength = 20;
         double distAcrossField;
+        SkyStoneStatus status = SkyStoneStatus.NO_STONE;
+        SkyStoneStatus[] statusArr = new SkyStoneStatus[6];
         waitForStart();
         int amtSkyStone = 0;
+        int amtStone = 6;
         double distanceToStone=20;
         //given number of tick (from the specific  motor)  per revolution
         //each encoder is different
@@ -49,6 +53,7 @@ public class Auto extends LinearOpMode {
         while (opModeIsActive()) {
             hueVal = color_sensor.argb();
             alphaVal = color_sensor.alpha();
+            //alpha val is the lightness or darkness .1 is in the middle of white 1 and black 0
             if (hueVal >= 40 && hueVal <= 80) {
                 telemetry.addData("Hue: ", "Yellow");
 
@@ -57,34 +62,35 @@ public class Auto extends LinearOpMode {
                 //test commit (Madeline)
                 //test commit (Emily)
             }
-            while (amtSkyStone < 2) {  // this means it senses the stone
-                //senses stone
-                while (!skyStone){
-                    if (alphaVal <= 0.1) {
-                        skyStone = true;
 
-                    }
+            while (!skyStone){
+                if (alphaVal <= 0.1) {
+                    skyStone = true;
                 }
+                else //not a skystone then strafe to the next stone
+            }
 
+            while (amtStone < 6) {  // this means it senses the stone
+                //senses stone
+
+
+                // move the motors specific amount of ticks to sky stone
                 leftFrontDrive.setTargetPosition((int) ticksToStone);
                 leftBackDrive.setTargetPosition((int) ticksToStone);
                 rightFrontDrive.setTargetPosition((int) ticksToStone);
                 rightBackDrive.setTargetPosition((int) ticksToStone);
 
+                // move the fly wheels
                 leftFrontFlywheel.setTargetPosition((int)flywheelTest);
-                leftBackFlywheel.setTargetPosition((int)flywheelTest);
                 rightFrontFlywheel.setTargetPosition((int)flywheelTest);
-                rightBackFlywheel.setTargetPosition((int)flywheelTest);
+                // stop when eventually reach the amount of ticks needed
 
+                //turn 90 degrees with outtake system facing drop off point
                 driveTrain.rotateCounterClockwise(90);
 
-
-                //alpha val is the lightness or darkness .1 is in the middle of white 1 and black 0
-                //move the motors specific amount of ticks to sky stone
-                //move the fly wheels
-                //  stop when eventually reach the amount of ticks needed
-                //turn 90 degrees with outtake system facing drop off point
                 //move backwards to drop off point
+
+
                 //reverse fly wheels to exit stone
                 //increase count by one
                 //if count is 2, exit while loop
