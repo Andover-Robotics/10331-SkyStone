@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.andoverrobotics.core.drivetrain.MecanumDrive;
+import com.andoverrobotics.core.utilities.Coordinate;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -56,20 +57,13 @@ import com.qualcomm.robotcore.util.Range;
 public class TeleOp extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftFrontDrive = null;
-    private DcMotor leftBackDrive = null;
-    private DcMotor rightFrontDrive = null;
-    private DcMotor rightBackDrive = null;
+    private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
-    private DcMotor leftFrontFlywheel = null;
-    private DcMotor rightFrontFlywheel = null;
-    private DcMotor rightBackFlywheel = null;
-    private DcMotor leftBackFlywheel = null;
+    private DcMotor leftFrontFlywheel, rightFrontFlywheel, leftBackFlywheel, rightBackFlywheel;
     // boolean to see if Flywheels are running
-    private boolean runFrontFlywheels = false;
-    private boolean runBackFlywheels = false;
-
-
+    private boolean runFrontFlywheels = false, runBackFlywheels = false;
+    //Using ARC-Core's Mecanum Drive class, we initialized a Mecanum Drive as seen below
+    private MecanumDrive driveTrain;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -90,6 +84,8 @@ public class TeleOp extends OpMode {
         rightFrontFlywheel = hardwareMap.get(DcMotor.class, "right_front_flywheel");
         rightBackFlywheel = hardwareMap.get(DcMotor.class, "right_back_flywheel");
 
+        // Initialize our Mecanum Drive using our motors as parameters
+        driveTrain = MecanumDrive.fromCrossedMotors(leftFrontDrive,rightFrontDrive,leftBackDrive,rightBackDrive, this, 89, 1120);
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -128,12 +124,6 @@ public class TeleOp extends OpMode {
      */
     @Override
     public void loop() {
-        // Setup a variable for each drive wheel to save power level for telemetry
-        double leftbackPower;
-        double rightbackPower;
-        double leftfrontPower;
-        double rightfrontPower;
-
         // Choose to drive using either Tank Mode, or POV Mode
         // Comment out the method that's not used.  The default below is POV.
 
@@ -143,14 +133,9 @@ public class TeleOp extends OpMode {
         double turn = gamepad1.right_stick_x;
         double strafe = gamepad1.left_stick_x;
 
-        //to strafe right --> left in, right out
-        //to strafe left --> right in, left out
-        //test
 
-        leftbackPower = Range.clip(drive + turn - strafe, -1.0, 1.0);
-        rightbackPower = Range.clip(drive - turn - strafe, -1.0, 1.0);
-        leftfrontPower = Range.clip(drive + turn + strafe, -1.0, 1.0);
-        rightfrontPower = Range.clip(drive - turn + strafe, -1.0, 1.0);
+        driveTrain.setDefaultDrivePower(1);
+        driveTrain.setStrafe(strafe, drive);
 
         //when 'a' button is pressed and front flywheels are not running, set bool to true
         if (gamepad1.a && !runFrontFlywheels) {
@@ -187,15 +172,14 @@ public class TeleOp extends OpMode {
         // rightPower = -gamepad1.right_stick_y ;
 
         // Send calculated power to wheels
-
+        /*
         leftBackDrive.setPower(leftbackPower);
         rightBackDrive.setPower(rightbackPower);
         leftFrontDrive.setPower(leftfrontPower);
         rightFrontDrive.setPower(rightfrontPower);
-
+        */
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors", "left front (%.2f), left back (%.2f), right front (%.2f), right back (%.2f)", leftfrontPower, leftbackPower, rightfrontPower, rightbackPower);
     }
     //test
 
