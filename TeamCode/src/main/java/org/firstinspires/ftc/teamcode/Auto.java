@@ -6,15 +6,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController; // this is for the controller
 public class Auto extends LinearOpMode {
 
-    private DcMotor leftFrontDrive = null;
-    private DcMotor leftBackDrive = null;
-    private DcMotor rightFrontDrive = null;
-    private DcMotor rightBackDrive = null;
+    private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
-    private DcMotor leftFrontFlywheel = null;
-    private DcMotor rightFrontFlywheel = null;
-    private DcMotor rightBackFlywheel = null;
-    private DcMotor leftBackFlywheel = null;
+    private DcMotor leftFrontFlywheel, leftBackFlywheel, rightFrontFlywheel, rightBackFlywheel;
 
     @Override
     public void runOpMode() {

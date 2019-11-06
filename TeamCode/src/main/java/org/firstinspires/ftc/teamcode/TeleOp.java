@@ -59,7 +59,7 @@ public class TeleOp extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
-    private DcMotor leftFrontFlywheel, rightFrontFlywheel, leftBackFlywheel, rightBackFlywheel;
+    private DcMotor leftFrontFlywheel, leftBackFlywheel, rightFrontFlywheel, rightBackFlywheel;
     // boolean to see if Flywheels are running
     private boolean runFrontFlywheels = false, runBackFlywheels = false;
     //Using ARC-Core's Mecanum Drive class, we initialized a Mecanum Drive as seen below
