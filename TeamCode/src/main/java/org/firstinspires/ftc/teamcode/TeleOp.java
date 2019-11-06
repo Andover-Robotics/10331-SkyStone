@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.andoverrobotics.core.drivetrain.MecanumDrive;
+import com.andoverrobotics.core.utilities.Coordinate;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -42,33 +44,26 @@ import com.qualcomm.robotcore.util.Range;
  * The names of OpModes appear on the menu of the FTC Driver Station.
  * When an selection is made from the menu, the corresponding OpMode
  * class is instantiated on the Robot Controller and executed.
- *
+ * <p>
  * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
  * It includes all the skeletal structure that all iterative OpModes contain.
- *
+ * <p>
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="Basic: Iterative OpMode", group="Iterative Opmode")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Basic: Iterative OpMode", group = "Iterative Opmode")
 //@Disabled
-public class TeleOp extends OpMode
-{
+public class TeleOp extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftFrontDrive = null;
-    private DcMotor leftBackDrive = null;
-    private DcMotor rightFrontDrive = null;
-    private DcMotor rightBackDrive = null;
+    private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
-    private DcMotor leftFrontFlywheel = null;
-    private DcMotor rightFrontFlywheel = null;
-    private DcMotor rightBackFlywheel = null;
-    private DcMotor leftBackFlywheel = null;
+    private DcMotor leftFrontFlywheel, rightFrontFlywheel, leftBackFlywheel, rightBackFlywheel;
     // boolean to see if Flywheels are running
-    private boolean runFrontFlywheels = false;
-    private boolean runBackFlywheels = false;
-
+    private boolean runFrontFlywheels = false, runBackFlywheels = false;
+    //Using ARC-Core's Mecanum Drive class, we initialized a Mecanum Drive as seen below
+    private MecanumDrive driveTrain;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -79,7 +74,7 @@ public class TeleOp extends OpMode
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftFrontDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
+        leftFrontDrive = hardwareMap.get(DcMotor.class, "left_front_drive");
         leftBackDrive = hardwareMap.get(DcMotor.class, "left_back_drive");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
@@ -89,8 +84,8 @@ public class TeleOp extends OpMode
         rightFrontFlywheel = hardwareMap.get(DcMotor.class, "right_front_flywheel");
         rightBackFlywheel = hardwareMap.get(DcMotor.class, "right_back_flywheel");
 
-
-
+        // Initialize our Mecanum Drive using our motors as parameters
+        driveTrain = MecanumDrive.fromCrossedMotors(leftFrontDrive,rightFrontDrive,leftBackDrive,rightBackDrive, this, 89, 1120);
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -129,54 +124,43 @@ public class TeleOp extends OpMode
      */
     @Override
     public void loop() {
-        // Setup a variable for each drive wheel to save power level for telemetry
-        double leftbackPower;
-        double rightbackPower;
-        double leftfrontPower;
-        double rightfrontPower;
-
         // Choose to drive using either Tank Mode, or POV Mode
         // Comment out the method that's not used.  The default below is POV.
 
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
         double drive = -gamepad1.left_stick_y;
-        double turn  =  gamepad1.right_stick_x;
+        double turn = gamepad1.right_stick_x;
         double strafe = gamepad1.left_stick_x;
 
-        //to strafe right --> left in, right out
-        //to strafe left --> right in, left out
-        //test
 
-        leftbackPower    = Range.clip(drive + turn - strafe, -1.0, 1.0) ;
-        rightbackPower   = Range.clip(drive - turn - strafe, -1.0, 1.0) ;
-        leftfrontPower = Range.clip(drive + turn + strafe, -1.0, 1.0) ;
-        rightfrontPower = Range.clip(drive - turn + strafe, -1.0, 1.0) ;
+        driveTrain.setDefaultDrivePower(1);
+        driveTrain.setStrafe(strafe, drive);
 
         //when 'a' button is pressed and front flywheels are not running, set bool to true
-        if(gamepad1.a && !runFrontFlywheels) {
+        if (gamepad1.a && !runFrontFlywheels) {
             runFrontFlywheels = true;
             // when 'a' button is pressed and front flywheels are running, set bool to false
-        } else if(gamepad1.a && runFrontFlywheels) {xiui
+        } else if (gamepad1.a && runFrontFlywheels) {
             runFrontFlywheels = false;
         }
 
         //run flywheels at full power when bool true
-        if(runFrontFlywheels) {
+        if (runFrontFlywheels) {
             leftFrontFlywheel.setPower(1);
             rightFrontFlywheel.setPower(1);
         }
 
         //when 'b' button is pressed and back flywheels are not running, set bool to true
-        if(gamepad1.b && !runBackFlywheels) {
+        if (gamepad1.b && !runBackFlywheels) {
             runBackFlywheels = true;
             // when 'b' button is pressed and back flywheels are running, set bool to false
-        } else if(gamepad1.b && runBackFlywheels) {
+        } else if (gamepad1.b && runBackFlywheels) {
             runBackFlywheels = false;
         }
 
         //run flywheels at full power when bool true
-        if(runBackFlywheels) {
+        if (runBackFlywheels) {
             leftBackFlywheel.setPower(1);
             rightBackFlywheel.setPower(1);
         }
@@ -188,15 +172,14 @@ public class TeleOp extends OpMode
         // rightPower = -gamepad1.right_stick_y ;
 
         // Send calculated power to wheels
-
+        /*
         leftBackDrive.setPower(leftbackPower);
         rightBackDrive.setPower(rightbackPower);
         leftFrontDrive.setPower(leftfrontPower);
         rightFrontDrive.setPower(rightfrontPower);
-
+        */
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors", "left front (%.2f), left back (%.2f), right front (%.2f), right back (%.2f)", leftfrontPower, leftbackPower, rightfrontPower, rightbackPower);
     }
     //test
 

@@ -16,14 +16,17 @@ dependencies {
      * Other Modules
      */
     implementation project(':FtcRobotController')
+    implementation project(':ARC-Core')
 
     turboImplementation project(':Hardware')
     turboImplementation project(':RobotCore')
     turboImplementation project(':FtcCommon')
+    turboImplementation project(':ARC-Core')
 
     extremeTurboImplementation project(':Hardware')
     extremeTurboImplementation project(':RobotCore')
     extremeTurboImplementation project(':FtcCommon')
+    extremeTurboImplementation project(':ARC-Core')
 
     stockImplementation 'org.openftc:hardware-stock:5.2'
     stockImplementation 'org.openftc:robotcore-stock:5.2'
