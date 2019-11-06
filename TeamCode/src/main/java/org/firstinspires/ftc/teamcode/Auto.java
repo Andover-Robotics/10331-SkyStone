@@ -35,7 +35,8 @@ public class Auto extends LinearOpMode {
 
         double flywheel = 15.95;
 
-        double test = findTotalTicks(1120, 32, 20);
+        double mecanumTest = findTotalTicks(1120, 32, 20);
+        double flywheelTest = findTotalTicks(538, 16, 20);
 
         while (opModeIsActive()) {
             hueVal = color_sensor.argb();
@@ -77,10 +78,10 @@ public class Auto extends LinearOpMode {
             //dividing line
 
             while (!parkedOverLine) {
-                leftFrontDrive.setTargetPosition((int)test);
-                leftBackDrive.setTargetPosition((int)test);
-                rightFrontDrive.setTargetPosition((int)test);
-                rightBackDrive.setTargetPosition((int)test);
+                leftFrontDrive.setTargetPosition((int)mecanumTest);
+                leftBackDrive.setTargetPosition((int)mecanumTest);
+                rightFrontDrive.setTargetPosition((int)mecanumTest);
+                rightBackDrive.setTargetPosition((int)mecanumTest);
                 //if we need to turn, set the left wheels to negative
             }
         }
