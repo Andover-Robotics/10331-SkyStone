@@ -35,7 +35,10 @@ public class Auto extends LinearOpMode {
 
         double flywheel = 15.95;
 
-        double test = findTotalTicks(1120, 32, 20);
+        double mecanumTest = findTotalTicks(1120, 32, 20);
+        double flywheelTest = findTotalTicks(538, 15.95, 20);
+
+
 
         while (opModeIsActive()) {
             hueVal = color_sensor.argb();
@@ -48,21 +51,20 @@ public class Auto extends LinearOpMode {
                 //test commit (Madeline)
                 //test commit (Emily)
             }
+
             while (amtSkyStone < 2 ) {  // this means it senses the stone
                 //senses stone
                 if(alphaVal<=0.1) {
-
+                    skyStone = true;
                 }
                 //alpha val is the lightness or darkness .1 is in the middle of white 1 and black 0
                 //move the motors specific amount of ticks to sky stone
-                skyStone = true;
                 //move the fly wheels
                 //  stop when eventually reach the amount of ticks needed
                 //turn 90 degrees with outtake system facing drop off point
                 //move backwards to drop off point
                 //reverse fly wheels to exit stone
                 //increase count by one
-                amtSkyStone++;
                 //if count is 2, exit while loop
                 //else go back to next stone
 
@@ -77,11 +79,11 @@ public class Auto extends LinearOpMode {
             //dividing line
 
             while (!parkedOverLine) {
-                leftFrontDrive.setTargetPosition((int)test);
-                leftBackDrive.setTargetPosition((int)test);
-                rightFrontDrive.setTargetPosition((int)test);
-                rightBackDrive.setTargetPosition((int)test);
-                //if we need to turn, set the left wheels to negative
+                leftFrontDrive.setTargetPosition((int)mecanumTest);
+                leftBackDrive.setTargetPosition((int)mecanumTest);
+                rightFrontDrive.setTargetPosition((int)mecanumTest);
+                rightBackDrive.setTargetPosition((int)mecanumTest);
+                //if we need to turn, set the right wheels to negative
             }
         }
     }
