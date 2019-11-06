@@ -59,7 +59,7 @@ public class TeleOp extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
-    private DcMotor leftFrontFlywheel, rightFrontFlywheel, leftBackFlywheel, rightBackFlywheel;
+    private DcMotor leftFrontFlywheel, leftBackFlywheel, rightFrontFlywheel, rightBackFlywheel;
     // boolean to see if Flywheels are running
     private boolean runFrontFlywheels = false, runBackFlywheels = false;
     //Using ARC-Core's Mecanum Drive class, we initialized a Mecanum Drive as seen below
@@ -85,7 +85,9 @@ public class TeleOp extends OpMode {
         rightBackFlywheel = hardwareMap.get(DcMotor.class, "right_back_flywheel");
 
         // Initialize our Mecanum Drive using our motors as parameters
+        // Set default power of mecanum drive to 1.0
         driveTrain = MecanumDrive.fromCrossedMotors(leftFrontDrive,rightFrontDrive,leftBackDrive,rightBackDrive, this, 89, 1120);
+        driveTrain.setDefaultDrivePower(1);
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -133,9 +135,18 @@ public class TeleOp extends OpMode {
         double turn = gamepad1.right_stick_x;
         double strafe = gamepad1.left_stick_x;
 
-
-        driveTrain.setDefaultDrivePower(1);
+        // Strafe -- parameters: x and y coordinate to determine direction of movement
+        // strafe gives x-direction of movement, drive gives y
         driveTrain.setStrafe(strafe, drive);
+
+        // If turn is positive (joystick is pushed to the right), then rotate cw
+        // If turn is negative (joystick is pushed to the left), then rotate ccw
+        // NOTE: ADJUST FOR SENSITIVITY -- coordinate w/drive team
+        if(turn > 0) {
+            driveTrain.rotateClockwise(10,1);
+        } else if(turn < 0) {
+            driveTrain.rotateCounterClockwise(10,1);
+        }
 
         //when 'a' button is pressed and front flywheels are not running, set bool to true
         if (gamepad1.a && !runFrontFlywheels) {
