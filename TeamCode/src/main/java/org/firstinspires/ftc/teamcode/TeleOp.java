@@ -157,7 +157,7 @@ public class TeleOp extends OpMode
         if(gamepad1.a && !runFrontFlywheels) {
             runFrontFlywheels = true;
             // when 'a' button is pressed and front flywheels are running, set bool to false
-        } else if(gamepad1.a && runFrontFlywheels) {
+        } else if(gamepad1.a && runFrontFlywheels) {xiui
             runFrontFlywheels = false;
         }
 
