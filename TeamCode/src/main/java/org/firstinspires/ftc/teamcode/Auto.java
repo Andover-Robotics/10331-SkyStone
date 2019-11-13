@@ -67,7 +67,9 @@ public class Auto extends LinearOpMode {
                 if (alphaVal <= 0.1) {
                     skyStone = true;
                 }
-                else //not a skystone then strafe to the next stone
+                else {
+                    //not a skystone then strafe to the next stone
+                }
             }
 
             while (amtStone < 6) {  // this means it senses the stone
