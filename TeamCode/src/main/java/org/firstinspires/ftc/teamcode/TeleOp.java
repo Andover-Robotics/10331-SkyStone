@@ -62,7 +62,7 @@ public class TeleOp extends OpMode {
     //NEW FLYWHEELS
     private DcMotor leftFrontFlywheel, leftBackFlywheel, rightFrontFlywheel, rightBackFlywheel;
     // boolean to see if Flywheels are running
-    private boolean runFrontFlywheels = false, runBackFlywheels = false;
+    private boolean runFlywheelsForward = false, runFlywheelsBackwards = false;
     //Using ARC-Core's Mecanum Drive class, we initialized a Mecanum Drive as seen below
     private MecanumDrive driveTrain;
     /*
@@ -150,31 +150,31 @@ public class TeleOp extends OpMode {
         }
 
         //when 'a' button is pressed and front flywheels are not running, set bool to true
-        if (gamepad1.a && !runFrontFlywheels) {
-            runFrontFlywheels = true;
+        if (gamepad1.a && !runFlywheelsForward) {
+            runFlywheelsForward = true;
             // when 'a' button is pressed and front flywheels are running, set bool to false
-        } else if (gamepad1.a && runFrontFlywheels) {
-            runFrontFlywheels = false;
+        } else if (gamepad1.a && runFlywheelsForward) {
+            runFlywheelsForward = false;
         }
 
         //run flywheels at full power when bool true
-        if (runFrontFlywheels) {
+        if (runFlywheelsForward) {
             leftFrontFlywheel.setPower(1);
             rightFrontFlywheel.setPower(1);
         }
 
         //when 'b' button is pressed and back flywheels are not running, set bool to true
-        if (gamepad1.b && !runBackFlywheels) {
-            runBackFlywheels = true;
+        if (gamepad1.b && !runFlywheelsBackwards) {
+            runFlywheelsBackwards = true;
             // when 'b' button is pressed and back flywheels are running, set bool to false
-        } else if (gamepad1.b && runBackFlywheels) {
-            runBackFlywheels = false;
+        } else if (gamepad1.b && runFlywheelsBackwards) {
+            runFlywheelsBackwards = false;
         }
 
         //run flywheels at full power when bool true
-        if (runBackFlywheels) {
-            leftBackFlywheel.setPower(1);
-            rightBackFlywheel.setPower(1);
+        if (runFlywheelsBackwards) {
+            leftFrontFlywheel.setPower(-1);
+            rightFrontFlywheel.setPower(-1);
         }
 
 
