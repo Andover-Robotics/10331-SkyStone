@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -65,6 +66,8 @@ public class TeleOp extends OpMode {
     private boolean runFlywheelsForward = false, runFlywheelsBackwards = false;
     //Using ARC-Core's Mecanum Drive class, we initialized a Mecanum Drive as seen below
     private MecanumDrive driveTrain;
+    // New servo to move foundation
+    private Servo servo;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -84,6 +87,8 @@ public class TeleOp extends OpMode {
         leftBackFlywheel = hardwareMap.get(DcMotor.class, "left_back_flywheel");
         rightFrontFlywheel = hardwareMap.get(DcMotor.class, "right_front_flywheel");
         rightBackFlywheel = hardwareMap.get(DcMotor.class, "right_back_flywheel");
+
+        servo = hardwareMap.get(Servo.class, "servo");
 
         // Initialize our Mecanum Drive using our motors as parameters
         // Set default power of mecanum drive to 1.0
