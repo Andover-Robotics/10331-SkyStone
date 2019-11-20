@@ -107,6 +107,11 @@ public class TeleOp extends OpMode {
         leftBackFlywheel.setDirection(DcMotor.Direction.REVERSE);
         leftFrontFlywheel.setDirection(DcMotor.Direction.REVERSE);
 
+        leftFrontFlywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftBackFlywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFrontFlywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightBackFlywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");

@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController; // this is for the controller
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class TempAuto extends LinearOpMode {
 
@@ -15,10 +16,14 @@ public class TempAuto extends LinearOpMode {
     private final double mecanumCircumference = 32, flywheelCircumference = 16;
     private final int ticksPerMecanum = 1120, ticksPerFlywheel = 538;
     public enum SkyStoneStatus {NO_STONE, STONE, SKYSTONE}
+    ElapsedTime runtime = new ElapsedTime();
 
     private final double TILE_LENGTH = inchesToCm(24), FIELD_LENGTH = 6*TILE_LENGTH;
     @Override
     public void runOpMode() {
+
+        runtime.reset();
+
         leftFrontDrive = hardwareMap.get(DcMotor.class, "left_front_drive");
         leftBackDrive = hardwareMap.get(DcMotor.class, "left_back_drive");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
@@ -50,28 +55,40 @@ public class TempAuto extends LinearOpMode {
         double ticksToStone = findTotalTicks(ticksPerMecanum, mecanumCircumference, distanceToStone);
 
         while (opModeIsActive()) {
-            driveTrain.driveForwards(2*TILE_LENGTH+2.5);
+            driveTrain.driveForwards(TILE_LENGTH+2.5);
+            //drive to start position to be the right distance away from the first stone
 
-            for(int i = 0; i < 6; i++) {
+            int block = 0;
+            for(block = 0; block < 6 && runtime.seconds() < 25; block++) {
+                driveTrain.driveForwards(TILE_LENGTH);
                 driveTrain.rotateCounterClockwise(90);
 
-                driveTrain.driveForwards(4);
+                driveTrain.driveForwards(4); // test val of 4 ??
+                //the calibration based on which iteration we're on is done at the bottom of the loop
                 leftFrontFlywheel.setTargetPosition(leftFrontFlywheel.getCurrentPosition()+(int)flywheelTest);
                 rightFrontFlywheel.setTargetPosition(rightFrontFlywheel.getCurrentPosition()+(int)flywheelTest);
+                //pick up the next stone
 
                 driveTrain.rotateCounterClockwise(90);
                 driveTrain.driveForwards(TILE_LENGTH);
                 driveTrain.rotateCounterClockwise(90);
-                driveTrain.driveForwards(2*TILE_LENGTH + 8*i);
+                driveTrain.driveForwards(2*TILE_LENGTH + 8*block);
+                //head over to the building zone
 
                 leftFrontFlywheel.setTargetPosition(leftFrontFlywheel.getCurrentPosition()-(int)flywheelTest);
                 rightFrontFlywheel.setTargetPosition(rightFrontFlywheel.getCurrentPosition()-(int)flywheelTest);
+                //outtake stone
 
-                driveTrain.driveBackwards(2*TILE_LENGTH + 8*(i+1));
+                driveTrain.driveBackwards(2*TILE_LENGTH + 8*(block+1));
+                //drive back to the next stone (an extra block distance for every iteration)
 
                 driveTrain.rotateCounterClockwise(90);
-                driveTrain.driveForwards(TILE_LENGTH);
             }
+
+            // park over line
+            driveTrain.rotateClockwise(90);
+            // calibrate spec. val of constant to add
+            driveTrain.driveForwards(8*(block+1)+TILE_LENGTH);
         }
     }
 
