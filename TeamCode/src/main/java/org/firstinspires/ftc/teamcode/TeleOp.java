@@ -54,7 +54,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Basic: Iterative OpMode", group = "Iterative Opmode")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOp", group = "Iterative Opmode")
 //@Disabled
 public class TeleOp extends OpMode {
     // Declare OpMode members.
@@ -67,7 +67,7 @@ public class TeleOp extends OpMode {
     //Using ARC-Core's Mecanum Drive class, we initialized a Mecanum Drive as seen below
     private MecanumDrive driveTrain;
     // New servo to move foundation
-    private Servo servo;
+    //private Servo servo;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -88,7 +88,7 @@ public class TeleOp extends OpMode {
         rightFrontFlywheel = hardwareMap.get(DcMotor.class, "rightFrontFlywheel");
         rightBackFlywheel = hardwareMap.get(DcMotor.class, "rightBackFlywheel");
 
-        servo = hardwareMap.get(Servo.class, "servo");
+        //servo = hardwareMap.get(Servo.class, "servo");
 
         // Initialize our Mecanum Drive using our motors as parameters
         // Set default power of mecanum drive to 1.0
@@ -130,6 +130,11 @@ public class TeleOp extends OpMode {
     @Override
     public void start() {
         runtime.reset();
+        leftFrontFlywheel.setPower(0);
+        leftBackFlywheel.setPower(0);
+        rightFrontFlywheel.setPower(0);
+        rightBackFlywheel.setPower(0);
+
     }
 
     /*
@@ -154,10 +159,12 @@ public class TeleOp extends OpMode {
         // If turn is negative (joystick is pushed to the left), then rotate ccw
         // NOTE: ADJUST FOR SENSITIVITY -- coordinate w/drive team
         if(turn > 0) {
-            driveTrain.rotateClockwise(10,1);
-        } else if(turn < 0) {
-            driveTrain.rotateCounterClockwise(10,1);
-        }
+            //driveTrain.rotateClockwise(10,1);
+            driveTrain.setRotationPower(1);
+        } /*else if(turn < 0) {
+            //driveTrain.rotateCounterClockwise(10,1);
+            driveTrain.setRotationPower(-1);
+        }*/
 
         //when 'a' button is pressed and front flywheels are not running, set bool to true
         if (gamepad1.a && !runFlywheelsForward) {
@@ -171,6 +178,9 @@ public class TeleOp extends OpMode {
         if (runFlywheelsForward) {
             leftFrontFlywheel.setPower(1);
             rightFrontFlywheel.setPower(1);
+        } else {
+            leftFrontFlywheel.setPower(0);
+            rightFrontFlywheel.setPower(0);
         }
 
         //when 'b' button is pressed and back flywheels are not running, set bool to true
@@ -185,6 +195,9 @@ public class TeleOp extends OpMode {
         if (runFlywheelsBackwards) {
             leftFrontFlywheel.setPower(-1);
             rightFrontFlywheel.setPower(-1);
+        } else {
+            leftFrontFlywheel.setPower(0);
+            rightFrontFlywheel.setPower(0);
         }
 
 
