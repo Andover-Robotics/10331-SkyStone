@@ -51,19 +51,27 @@ public class TempAuto extends LinearOpMode {
 
         while (opModeIsActive()) {
             driveTrain.driveForwards(2*TILE_LENGTH+2.5);
-            driveTrain.rotateCounterClockwise(90);
 
-            driveTrain.driveForwards(4);
-            leftFrontFlywheel.setTargetPosition(leftFrontFlywheel.getCurrentPosition()+(int)flywheelTest);
-            rightFrontFlywheel.setTargetPosition(rightFrontFlywheel.getCurrentPosition()+(int)flywheelTest);
+            for(int i = 0; i < 6; i++) {
+                driveTrain.rotateCounterClockwise(90);
 
-            driveTrain.rotateCounterClockwise(90);
-            driveTrain.driveForwards(TILE_LENGTH);
-            driveTrain.rotateCounterClockwise(90);
-            driveTrain.driveForwards(2*TILE_LENGTH);
+                driveTrain.driveForwards(4);
+                leftFrontFlywheel.setTargetPosition(leftFrontFlywheel.getCurrentPosition()+(int)flywheelTest);
+                rightFrontFlywheel.setTargetPosition(rightFrontFlywheel.getCurrentPosition()+(int)flywheelTest);
 
-            leftFrontFlywheel.setTargetPosition(leftFrontFlywheel.getCurrentPosition()-(int)flywheelTest);
-            rightFrontFlywheel.setTargetPosition(rightFrontFlywheel.getCurrentPosition()-(int)flywheelTest);
+                driveTrain.rotateCounterClockwise(90);
+                driveTrain.driveForwards(TILE_LENGTH);
+                driveTrain.rotateCounterClockwise(90);
+                driveTrain.driveForwards(2*TILE_LENGTH + 8*i);
+
+                leftFrontFlywheel.setTargetPosition(leftFrontFlywheel.getCurrentPosition()-(int)flywheelTest);
+                rightFrontFlywheel.setTargetPosition(rightFrontFlywheel.getCurrentPosition()-(int)flywheelTest);
+
+                driveTrain.driveBackwards(2*TILE_LENGTH + 8*(i+1));
+
+                driveTrain.rotateCounterClockwise(90);
+                driveTrain.driveForwards(TILE_LENGTH);
+            }
         }
     }
 
