@@ -14,7 +14,9 @@ public class TempAuto extends LinearOpMode {
     private MecanumDrive driveTrain;
     private final double mecanumCircumference = 32, flywheelCircumference = 16;
     private final int ticksPerMecanum = 1120, ticksPerFlywheel = 538;
-    public enum SkyStoneStatus {NO_STONE, STONE, SKYSTONE};
+    public enum SkyStoneStatus {NO_STONE, STONE, SKYSTONE}
+
+    private final double TILE_LENGTH = inchesToCm(24), FIELD_LENGTH = 6*TILE_LENGTH;
     @Override
     public void runOpMode() {
         leftFrontDrive = hardwareMap.get(DcMotor.class, "left_front_drive");
@@ -32,7 +34,6 @@ public class TempAuto extends LinearOpMode {
         boolean skyStone = false;
         boolean parkedOverLine = false;
         double stoneLength = 20;
-        double distAcrossField;
         SkyStoneStatus status = SkyStoneStatus.NO_STONE;
         SkyStoneStatus[] statusArr = new SkyStoneStatus[6];
         waitForStart();
@@ -49,48 +50,20 @@ public class TempAuto extends LinearOpMode {
         double ticksToStone = findTotalTicks(ticksPerMecanum, mecanumCircumference, distanceToStone);
 
         while (opModeIsActive()) {
-            while (amtStone < 6) {  // this means it senses the stone
-                //senses stone
+            driveTrain.driveForwards(2*TILE_LENGTH+2.5);
+            driveTrain.rotateCounterClockwise(90);
 
+            driveTrain.driveForwards(4);
+            leftFrontFlywheel.setTargetPosition(leftFrontFlywheel.getCurrentPosition()+(int)flywheelTest);
+            rightFrontFlywheel.setTargetPosition(rightFrontFlywheel.getCurrentPosition()+(int)flywheelTest);
 
-                // move the motors specific amount of ticks to sky stone
-                leftFrontDrive.setTargetPosition((int) ticksToStone);
-                leftBackDrive.setTargetPosition((int) ticksToStone);
-                rightFrontDrive.setTargetPosition((int) ticksToStone);
-                rightBackDrive.setTargetPosition((int) ticksToStone);
+            driveTrain.rotateCounterClockwise(90);
+            driveTrain.driveForwards(TILE_LENGTH);
+            driveTrain.rotateCounterClockwise(90);
+            driveTrain.driveForwards(2*TILE_LENGTH);
 
-                // move the fly wheels
-                leftFrontFlywheel.setTargetPosition((int)flywheelTest);
-                rightFrontFlywheel.setTargetPosition((int)flywheelTest);
-                // stop when eventually reach the amount of ticks needed
-
-                //turn 90 degrees with outtake system facing drop off point
-                driveTrain.rotateCounterClockwise(90);
-
-                //move backwards to drop off point
-
-
-                //reverse fly wheels to exit stone
-                //increase count by one
-                //if count is 2, exit while loop
-                //else go back to next stone
-
-                //later
-
-
-
-            }
-
-
-            //dividing line
-
-            while (!parkedOverLine) {
-                leftFrontDrive.setTargetPosition((int) mecanumTest);
-                leftBackDrive.setTargetPosition((int) mecanumTest);
-                rightFrontDrive.setTargetPosition((int) mecanumTest);
-                rightBackDrive.setTargetPosition((int) mecanumTest);
-                //if we need to turn, set the left wheels to negative
-            }
+            leftFrontFlywheel.setTargetPosition(leftFrontFlywheel.getCurrentPosition()-(int)flywheelTest);
+            rightFrontFlywheel.setTargetPosition(rightFrontFlywheel.getCurrentPosition()-(int)flywheelTest);
         }
     }
 
@@ -113,5 +86,7 @@ public class TempAuto extends LinearOpMode {
         return finalTicks;
     }
 
-
+    private static double inchesToCm(double inches) {
+        return inches*2.54;
+    }
 }

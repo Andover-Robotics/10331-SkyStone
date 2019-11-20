@@ -12,7 +12,7 @@ public class Auto extends LinearOpMode {
     //NEW FLYWHEELS
     private DcMotor leftFrontFlywheel, leftBackFlywheel, rightFrontFlywheel, rightBackFlywheel;
     private MecanumDrive driveTrain;
-    public enum SkyStoneStatus {NO_STONE, STONE, SKYSTONE};
+    public enum SkyStoneStatus {NO_STONE, STONE, SKYSTONE}
     @Override
     public void runOpMode() {
         ColorSensor color_sensor;
@@ -31,7 +31,7 @@ public class Auto extends LinearOpMode {
 
         int hueVal;
         double alphaVal;
-        boolean skyStone = false;
+        boolean senseSkyStone = false;
         boolean parkedOverLine = false;
         double stoneLength = 20;
         double distAcrossField;
@@ -63,14 +63,15 @@ public class Auto extends LinearOpMode {
                 //test commit (Emily)
             }
 
-            while (!skyStone){
+            while (!senseSkyStone){
                 if (alphaVal <= 0.1) {
-                    skyStone = true;
+                    senseSkyStone = true;
                 }
                 else {
                     //not a skystone then strafe to the next stone
                 }
             }
+
 
             while (amtStone < 6) {  // this means it senses the stone
                 //senses stone
