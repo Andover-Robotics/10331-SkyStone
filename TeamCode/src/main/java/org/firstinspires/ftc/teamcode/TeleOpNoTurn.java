@@ -30,14 +30,9 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.andoverrobotics.core.drivetrain.MecanumDrive;
-import com.andoverrobotics.core.utilities.Coordinate;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 
 /**
@@ -54,9 +49,9 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOp", group = "Iterative Opmode")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOpNoTurn", group = "Iterative Opmode")
 //@Disabled
-public class TeleOp extends OpMode {
+public class TeleOpNoTurn extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
@@ -140,13 +135,8 @@ public class TeleOp extends OpMode {
     /*
      * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
-
-    int count = 0;
-
     @Override
     public void loop() {
-        count++;
-        telemetry.addLine(((Integer)count).toString());
         // Choose to drive using either Tank Mode, or POV Mode
         // Comment out the method that's not used.  The default below is POV.
 
@@ -163,15 +153,13 @@ public class TeleOp extends OpMode {
         // If turn is positive (joystick is pushed to the right), then rotate cw
         // If turn is negative (joystick is pushed to the left), then rotate ccw
         // NOTE: ADJUST FOR SENSITIVITY -- coordinate w/drive team
-        if(turn > 0) {
+        /*if(turn > 0) {
             //driveTrain.rotateClockwise(10,1);
             driveTrain.setRotationPower(1);
         }else if(turn < 0) {
             //driveTrain.rotateCounterClockwise(10,1);
             driveTrain.setRotationPower(-1);
-        }else{
-            driveTrain.setRotationPower(0);
-        }
+        }*/
 
         //when 'a' button is pressed and front flywheels are not running, set bool to true
         if (gamepad1.a && !runFlywheelsForward) {
