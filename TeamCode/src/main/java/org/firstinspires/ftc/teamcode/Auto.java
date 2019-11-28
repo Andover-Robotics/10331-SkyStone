@@ -4,7 +4,7 @@ import com.andoverrobotics.core.drivetrain.MecanumDrive;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController; // this is for the controller
+//import com.qualcomm.robotcore.hardware.DcMotorController; // this is for the controller
 
 public class Auto extends LinearOpMode {
 
