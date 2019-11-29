@@ -63,7 +63,7 @@ public class TeleOp extends OpMode {
     //NEW FLYWHEELS
     private DcMotor leftFrontFlywheel, leftBackFlywheel, rightFrontFlywheel, rightBackFlywheel;
     // boolean to see if Flywheels are running
-    private boolean runFlywheelsForward = false, runFlywheelsBackwards = false;
+    private boolean runFlywheelsForward = false, runFlywheelsBackwards = false, stop=false;
     //Using ARC-Core's Mecanum Drive class, we initialized a Mecanum Drive as seen below
     private MecanumDrive driveTrain;
 
@@ -155,13 +155,13 @@ public class TeleOp extends OpMode {
         // - This uses basic math to combine motions and is easier to drive straight.
         double drive = gamepad1.left_stick_y;
         double turn = gamepad1.right_stick_x;
-        //double strafe = gamepad1.left_stick_x;
+        double strafe = gamepad2.left_stick_x;
 
         // Strafe -- parameters: x and y coordinate to determine direction of movement
         // strafe gives x-direction of movement, drive gives y
-        /*if (strafe != 0) {
+        if (strafe != 0) {
             driveTrain.setStrafe(strafe, drive);
-        }*/
+        }
 
         driveTrain.setMovementPower(drive);
 
@@ -179,16 +179,25 @@ public class TeleOp extends OpMode {
         }
 
         //when 'a' button is pressed and front flywheels are not running, set bool to true
-        if (gamepad2.a && !runFlywheelsForward && !runFlywheelsBackwards) {
+        if (gamepad2.a && !runFlywheelsBackwards) {
             runFlywheelsForward = true;
             // when 'a' button is pressed and front flywheels are running, set bool to false
-        } else if (gamepad2.a && runFlywheelsForward) {
+        } //else if (gamepad2.a && runFlywheelsForward) {
+            //runFlywheelsForward = false;
+        //}
+
+        else if (gamepad2.b && !runFlywheelsForward) {
+            runFlywheelsBackwards = true;
+        }
+
+        else if (gamepad2.x) {
             runFlywheelsForward = false;
+            runFlywheelsBackwards = false;
         }
 
         //run flywheels at full power when bool true
 
-        if (!runFlywheelsBackwards) {
+        /*if (!runFlywheelsBackwards) {
             if (runFlywheelsForward) {
                 leftFrontFlywheel.setPower(1);
                 rightFrontFlywheel.setPower(1);
@@ -196,19 +205,30 @@ public class TeleOp extends OpMode {
                 leftFrontFlywheel.setPower(0);
                 rightFrontFlywheel.setPower(0);
             }
+        }*/
+
+        if (!runFlywheelsBackwards && !runFlywheelsForward) {
+            leftFrontFlywheel.setPower(0);
+            rightFrontFlywheel.setPower(0);
+        }else if (runFlywheelsForward) {
+            leftFrontFlywheel.setPower(1);
+            rightFrontFlywheel.setPower(1);
+        }else {
+            leftFrontFlywheel.setPower(-1);
+            rightFrontFlywheel.setPower(-1);
         }
 
         //when 'b' button is pressed and back flywheels are not running, set bool to true
-        if (gamepad2.b && !runFlywheelsBackwards && !runFlywheelsForward) {
+        /*if (gamepad2.b && !runFlywheelsBackwards && !runFlywheelsForward) {
             runFlywheelsBackwards = true;
             // when 'b' button is pressed and back flywheels are running, set bool to false
         } else if (gamepad2.b && runFlywheelsBackwards) {
             runFlywheelsBackwards = false;
-        }
+        }*/
 
         //run flywheels at full power when bool true
 
-        if (!runFlywheelsForward) {
+        /*if (!runFlywheelsForward) {
             if (runFlywheelsBackwards) {
                 leftFrontFlywheel.setPower(-1);
                 rightFrontFlywheel.setPower(-1);
@@ -216,7 +236,7 @@ public class TeleOp extends OpMode {
                 leftFrontFlywheel.setPower(0);
                 rightFrontFlywheel.setPower(0);
             }
-        }
+        }*/
 
 
         // Tank Mode uses one stick to control each wheel.
