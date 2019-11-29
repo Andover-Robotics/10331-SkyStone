@@ -1,10 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.hardware.Sensor;
+
 import com.andoverrobotics.core.drivetrain.MecanumDrive;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 //import com.qualcomm.robotcore.hardware.DcMotorController; // this is for the controller
+
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Auto", group = "Linear Opmode")
 
 public class Auto extends LinearOpMode {
 

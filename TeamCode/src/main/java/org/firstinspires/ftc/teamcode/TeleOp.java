@@ -66,6 +66,7 @@ public class TeleOp extends OpMode {
     private boolean runFlywheelsForward = false, runFlywheelsBackwards = false;
     //Using ARC-Core's Mecanum Drive class, we initialized a Mecanum Drive as seen below
     private MecanumDrive driveTrain;
+
     // New servo to move foundation
     //private Servo servo;
     /*
@@ -152,13 +153,17 @@ public class TeleOp extends OpMode {
 
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
-        double drive = -gamepad1.left_stick_y;
+        double drive = gamepad1.left_stick_y;
         double turn = gamepad1.right_stick_x;
-        double strafe = gamepad1.left_stick_x;
+        //double strafe = gamepad1.left_stick_x;
 
         // Strafe -- parameters: x and y coordinate to determine direction of movement
         // strafe gives x-direction of movement, drive gives y
-        driveTrain.setStrafe(strafe, drive);
+        /*if (strafe != 0) {
+            driveTrain.setStrafe(strafe, drive);
+        }*/
+
+        driveTrain.setMovementPower(drive);
 
         // If turn is positive (joystick is pushed to the right), then rotate cw
         // If turn is negative (joystick is pushed to the left), then rotate ccw
@@ -174,37 +179,43 @@ public class TeleOp extends OpMode {
         }
 
         //when 'a' button is pressed and front flywheels are not running, set bool to true
-        if (gamepad1.a && !runFlywheelsForward) {
+        if (gamepad2.a && !runFlywheelsForward && !runFlywheelsBackwards) {
             runFlywheelsForward = true;
             // when 'a' button is pressed and front flywheels are running, set bool to false
-        } else if (gamepad1.a && runFlywheelsForward) {
+        } else if (gamepad2.a && runFlywheelsForward) {
             runFlywheelsForward = false;
         }
 
         //run flywheels at full power when bool true
-        if (runFlywheelsForward) {
-            leftFrontFlywheel.setPower(1);
-            rightFrontFlywheel.setPower(1);
-        } else {
-            leftFrontFlywheel.setPower(0);
-            rightFrontFlywheel.setPower(0);
+
+        if (!runFlywheelsBackwards) {
+            if (runFlywheelsForward) {
+                leftFrontFlywheel.setPower(1);
+                rightFrontFlywheel.setPower(1);
+            } else {
+                leftFrontFlywheel.setPower(0);
+                rightFrontFlywheel.setPower(0);
+            }
         }
 
         //when 'b' button is pressed and back flywheels are not running, set bool to true
-        if (gamepad1.b && !runFlywheelsBackwards) {
+        if (gamepad2.b && !runFlywheelsBackwards && !runFlywheelsForward) {
             runFlywheelsBackwards = true;
             // when 'b' button is pressed and back flywheels are running, set bool to false
-        } else if (gamepad1.b && runFlywheelsBackwards) {
+        } else if (gamepad2.b && runFlywheelsBackwards) {
             runFlywheelsBackwards = false;
         }
 
         //run flywheels at full power when bool true
-        if (runFlywheelsBackwards) {
-            leftFrontFlywheel.setPower(-1);
-            rightFrontFlywheel.setPower(-1);
-        } else {
-            leftFrontFlywheel.setPower(0);
-            rightFrontFlywheel.setPower(0);
+
+        if (!runFlywheelsForward) {
+            if (runFlywheelsBackwards) {
+                leftFrontFlywheel.setPower(-1);
+                rightFrontFlywheel.setPower(-1);
+            } else {
+                leftFrontFlywheel.setPower(0);
+                rightFrontFlywheel.setPower(0);
+            }
         }
 
 

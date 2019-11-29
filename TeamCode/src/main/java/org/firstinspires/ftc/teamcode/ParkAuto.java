@@ -7,9 +7,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController; // this is for the controller
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Actual Auto", group = "Linear Opmode")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Parking Auto", group = "Linear Opmode")
 
-public class TempAuto extends LinearOpMode {
+public class ParkAuto extends LinearOpMode {
 
     private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
@@ -25,14 +25,15 @@ public class TempAuto extends LinearOpMode {
 
         runtime.reset();
 
-        leftFrontDrive = hardwareMap.get(DcMotor.class, "left_front_drive");
-        leftBackDrive = hardwareMap.get(DcMotor.class, "left_back_drive");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
-        leftFrontFlywheel = hardwareMap.get(DcMotor.class, "left_front_flywheel");
-        leftBackFlywheel = hardwareMap.get(DcMotor.class, "left_back_flywheel");
-        rightFrontFlywheel = hardwareMap.get(DcMotor.class, "right_front_flywheel");
-        rightBackFlywheel = hardwareMap.get(DcMotor.class, "right_back_flywheel");
+        leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontDrive");
+        leftBackDrive = hardwareMap.get(DcMotor.class, "leftBackDrive");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontDrive");
+        rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackDrive");
+
+        leftFrontFlywheel = hardwareMap.get(DcMotor.class, "leftFrontFlywheel");
+        leftBackFlywheel = hardwareMap.get(DcMotor.class, "leftBackFlywheel");
+        rightFrontFlywheel = hardwareMap.get(DcMotor.class, "rightFrontFlywheel");
+        rightBackFlywheel = hardwareMap.get(DcMotor.class, "rightBackFlywheel");
 
         driveTrain = MecanumDrive.fromCrossedMotors(leftFrontDrive,rightFrontDrive,leftBackDrive,rightBackDrive, this, 89, 1120);
         driveTrain.setDefaultDrivePower(1);
@@ -44,7 +45,7 @@ public class TempAuto extends LinearOpMode {
         double flywheelTest = findTotalTicks(ticksPerFlywheel, flywheelCircumference, 20);
 
         while (opModeIsActive()) {
-            driveTrain.driveForwards(TILE_LENGTH+2.5);
+            /*driveTrain.driveForwards(TILE_LENGTH+2.5);
             //drive to start position to be the right distance away from the first stone
 
             int block;
@@ -78,6 +79,27 @@ public class TempAuto extends LinearOpMode {
             driveTrain.rotateClockwise(90);
             // calibrate spec. val of constant to add
             driveTrain.driveForwards(8*(block+1)+TILE_LENGTH);
+             */
+
+            //driveTrain.driveForwards(TILE_LENGTH);
+            //driveTrain.strafeLeft(TILE_LENGTH);
+
+            //int TILE_LENGTH_INT = (int)TILE_LENGTH;
+
+
+            leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() + (int)findTotalTicks(1120, 32, TILE_LENGTH));
+            leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() +(int)findTotalTicks(1120, 32, TILE_LENGTH));
+            rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition() +(int)findTotalTicks(1120, 32, TILE_LENGTH));
+            rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition() +(int)findTotalTicks(1120, 32, TILE_LENGTH));
+
+            driveTrain.setRotationPower(1);
+            sleep(500);
+
+            leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() + (int)findTotalTicks(1120, 32, TILE_LENGTH));
+            leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() +(int)findTotalTicks(1120, 32, TILE_LENGTH));
+            rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition() +(int)findTotalTicks(1120, 32, TILE_LENGTH));
+            rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition() +(int)findTotalTicks(1120, 32, TILE_LENGTH));
+
         }
     }
 
