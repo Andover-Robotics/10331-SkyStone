@@ -148,6 +148,7 @@ public class TeleOp extends OpMode {
     public void loop() {
         count++;
         telemetry.addLine(((Integer)count).toString());
+        telemetry.addData("LF Flywheel Power: ",  leftFrontFlywheel.getPower());
         // Choose to drive using either Tank Mode, or POV Mode
         // Comment out the method that's not used.  The default below is POV.
 
@@ -179,14 +180,16 @@ public class TeleOp extends OpMode {
         }
 
         //when 'a' button is pressed and front flywheels are not running, set bool to true
-        if (gamepad2.a && !runFlywheelsBackwards) {
+        if (gamepad2.a) {
+            runFlywheelsBackwards = false;
             runFlywheelsForward = true;
             // when 'a' button is pressed and front flywheels are running, set bool to false
         } //else if (gamepad2.a && runFlywheelsForward) {
             //runFlywheelsForward = false;
         //}
 
-        else if (gamepad2.b && !runFlywheelsForward) {
+        else if (gamepad2.b) {
+            runFlywheelsForward = false;
             runFlywheelsBackwards = true;
         }
 
@@ -212,10 +215,10 @@ public class TeleOp extends OpMode {
             rightFrontFlywheel.setPower(0);
         }else if (runFlywheelsForward) {
             leftFrontFlywheel.setPower(1);
-            rightFrontFlywheel.setPower(1);
+            rightFrontFlywheel.setPower(-0.33);
         }else {
             leftFrontFlywheel.setPower(-1);
-            rightFrontFlywheel.setPower(-1);
+            rightFrontFlywheel.setPower(0.33);
         }
 
         //when 'b' button is pressed and back flywheels are not running, set bool to true
