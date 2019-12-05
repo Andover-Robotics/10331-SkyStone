@@ -5,9 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "real auto", group = "Linear Opmode")
-
-public class TempAutoModified extends LinearOpMode {
+public class ColorSensorAuto extends LinearOpMode {
 
     private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
@@ -24,14 +22,14 @@ public class TempAutoModified extends LinearOpMode {
 
         runtime.reset();
 
-        leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontDrive");
-        leftBackDrive = hardwareMap.get(DcMotor.class, "leftBackDrive");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontDrive");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackDrive");
-        leftFrontFlywheel = hardwareMap.get(DcMotor.class, "leftFrontFlywheel");
-        leftBackFlywheel = hardwareMap.get(DcMotor.class, "leftBackFlywheel");
-        rightFrontFlywheel = hardwareMap.get(DcMotor.class, "rightFrontFlywheel");
-        rightBackFlywheel = hardwareMap.get(DcMotor.class, "rightBackFlywheel");
+        leftFrontDrive = hardwareMap.get(DcMotor.class, "left_front_drive");
+        leftBackDrive = hardwareMap.get(DcMotor.class, "left_back_drive");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
+        rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
+        leftFrontFlywheel = hardwareMap.get(DcMotor.class, "left_front_flywheel");
+        leftBackFlywheel = hardwareMap.get(DcMotor.class, "left_back_flywheel");
+        rightFrontFlywheel = hardwareMap.get(DcMotor.class, "right_front_flywheel");
+        rightBackFlywheel = hardwareMap.get(DcMotor.class, "right_back_flywheel");
 
         driveTrain = MecanumDrive.fromCrossedMotors(leftFrontDrive,rightFrontDrive,leftBackDrive,rightBackDrive, this, 89, 1120);
         driveTrain.setDefaultDrivePower(1);
@@ -55,13 +53,6 @@ public class TempAutoModified extends LinearOpMode {
         double ticksToStone = findTotalTicks(ticksPerMecanum, mecanumCircumference, distanceToStone);
 
         while (opModeIsActive()) {
-            leftFrontDrive.setTargetPosition(leftFrontFlywheel.getCurrentPosition());
-            rightFrontDrive.setTargetPosition(rightFrontFlywheel.getCurrentPosition());
-            leftBackDrive.setTargetPosition(leftFrontFlywheel.getCurrentPosition());
-            rightBackDrive.setTargetPosition(rightFrontFlywheel.getCurrentPosition());
-            leftFrontFlywheel.setTargetPosition(leftFrontFlywheel.getCurrentPosition());
-            rightFrontFlywheel.setTargetPosition(rightFrontFlywheel.getCurrentPosition());
-
             driveTrain.driveForwards(TILE_LENGTH+2.5);
             //drive to start position to be the right distance away from the first stone
 
