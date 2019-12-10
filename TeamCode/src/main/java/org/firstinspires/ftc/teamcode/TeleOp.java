@@ -164,7 +164,7 @@ public class TeleOp extends OpMode {
             leftFrontDrive.setPower(-1);
             rightFrontDrive.setPower(-1);
             leftBackDrive.setPower(1);
-            rightBackDrive.setPower(1);
+            rightBackDrive.setPower(1);//not going the correct way
             //driveTrain.setStrafe(strafe, drive);
         }
 
@@ -172,7 +172,7 @@ public class TeleOp extends OpMode {
             leftFrontDrive.setPower(1);
             rightFrontDrive.setPower(1);
             leftBackDrive.setPower(-1);
-            rightBackDrive.setPower(-1);
+            rightBackDrive.setPower(-1);// not going the correct way
         }
 
         else driveTrain.setMovementPower(drive);
