@@ -160,11 +160,22 @@ public class TeleOp extends OpMode {
 
         // Strafe -- parameters: x and y coordinate to determine direction of movement
         // strafe gives x-direction of movement, drive gives y
-        if (strafe != 0) {
-            driveTrain.setStrafe(strafe, drive);
+        if (strafe < 0) {
+            leftFrontDrive.setPower(-1);
+            rightFrontDrive.setPower(-1);
+            leftBackDrive.setPower(1);
+            rightBackDrive.setPower(1);//not going the correct way
+            //driveTrain.setStrafe(strafe, drive);
         }
 
-        driveTrain.setMovementPower(drive);
+        else if (strafe > 0) {
+            leftFrontDrive.setPower(1);
+            rightFrontDrive.setPower(1);
+            leftBackDrive.setPower(-1);
+            rightBackDrive.setPower(-1);// not going the correct way
+        }
+
+        else driveTrain.setMovementPower(drive);
 
         // If turn is positive (joystick is pushed to the right), then rotate cw
         // If turn is negative (joystick is pushed to the left), then rotate ccw
@@ -215,10 +226,10 @@ public class TeleOp extends OpMode {
             rightFrontFlywheel.setPower(0);
         }else if (runFlywheelsForward) {
             leftFrontFlywheel.setPower(1);
-            rightFrontFlywheel.setPower(-0.33);
+            rightFrontFlywheel.setPower(-1);
         }else {
             leftFrontFlywheel.setPower(-1);
-            rightFrontFlywheel.setPower(0.33);
+            rightFrontFlywheel.setPower(1);
         }
 
         //when 'b' button is pressed and back flywheels are not running, set bool to true
