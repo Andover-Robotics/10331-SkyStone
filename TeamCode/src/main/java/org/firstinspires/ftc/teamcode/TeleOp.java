@@ -160,11 +160,22 @@ public class TeleOp extends OpMode {
 
         // Strafe -- parameters: x and y coordinate to determine direction of movement
         // strafe gives x-direction of movement, drive gives y
-        if (strafe != 0) {
-            driveTrain.setStrafe(strafe, drive);
+        if (strafe < 0) {
+            leftFrontDrive.setPower(-1);
+            rightFrontDrive.setPower(-1);
+            leftBackDrive.setPower(1);
+            rightBackDrive.setPower(1);
+            //driveTrain.setStrafe(strafe, drive);
         }
 
-        driveTrain.setMovementPower(drive);
+        else if (strafe > 0) {
+            leftFrontDrive.setPower(1);
+            rightFrontDrive.setPower(1);
+            leftBackDrive.setPower(-1);
+            rightBackDrive.setPower(-1);
+        }
+
+        else driveTrain.setMovementPower(drive);
 
         // If turn is positive (joystick is pushed to the right), then rotate cw
         // If turn is negative (joystick is pushed to the left), then rotate ccw
