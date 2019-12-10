@@ -226,10 +226,10 @@ public class TeleOp extends OpMode {
             rightFrontFlywheel.setPower(0);
         }else if (runFlywheelsForward) {
             leftFrontFlywheel.setPower(1);
-            rightFrontFlywheel.setPower(-0.33);
+            rightFrontFlywheel.setPower(-1);
         }else {
             leftFrontFlywheel.setPower(-1);
-            rightFrontFlywheel.setPower(0.33);
+            rightFrontFlywheel.setPower(1);
         }
 
         //when 'b' button is pressed and back flywheels are not running, set bool to true
