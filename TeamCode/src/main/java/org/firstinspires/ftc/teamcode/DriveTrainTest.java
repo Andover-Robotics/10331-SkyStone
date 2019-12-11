@@ -156,6 +156,7 @@ public class DriveTrainTest extends OpMode {
         double turn = gamepad1.right_stick_x;
         double strafe = gamepad1.left_stick_x;
 
+        if (strafe != 0) telemetry.addLine("Trying to strafe");
         // Strafe -- parameters: x and y coordinate to determine direction of movement
         // strafe gives x-direction of movement, drive gives y
         driveTrain.setStrafe(strafe, drive);
@@ -166,9 +167,11 @@ public class DriveTrainTest extends OpMode {
         if(turn > 0) {
             //driveTrain.rotateClockwise(10,1);
             driveTrain.setRotationPower(1);
+            telemetry.addLine("Trying to turn");
         }else if(turn < 0) {
             //driveTrain.rotateCounterClockwise(10,1);
             driveTrain.setRotationPower(-1);
+            telemetry.addLine("Trying to turn");
         }else{
             driveTrain.setRotationPower(0);
         }
