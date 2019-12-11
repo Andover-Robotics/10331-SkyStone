@@ -175,7 +175,14 @@ public class TeleOp extends OpMode {
             rightBackDrive.setPower(-1);// not going the correct way
         }
 
-        else driveTrain.setMovementPower(drive);
+        else {
+            leftFrontDrive.setPower(0);
+            rightFrontDrive.setPower(0);
+            leftBackDrive.setPower(0);
+            rightBackDrive.setPower(0);
+            driveTrain.setMovementPower(drive);
+        }
+
 
         // If turn is positive (joystick is pushed to the right), then rotate cw
         // If turn is negative (joystick is pushed to the left), then rotate ccw
