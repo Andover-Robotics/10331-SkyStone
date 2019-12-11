@@ -161,6 +161,7 @@ public class TeleOp extends OpMode {
         // Strafe -- parameters: x and y coordinate to determine direction of movement
         // strafe gives x-direction of movement, drive gives y
         if (strafe < 0) {
+            telemetry.addLine("Trying to strafe");
             leftFrontDrive.setPower(-1);
             rightFrontDrive.setPower(-1);
             leftBackDrive.setPower(1);
@@ -169,6 +170,7 @@ public class TeleOp extends OpMode {
         }
 
         else if (strafe > 0) {
+            telemetry.addLine("Trying to strafe");
             leftFrontDrive.setPower(1);
             rightFrontDrive.setPower(1);
             leftBackDrive.setPower(-1);
@@ -188,9 +190,11 @@ public class TeleOp extends OpMode {
         // If turn is negative (joystick is pushed to the left), then rotate ccw
         // NOTE: ADJUST FOR SENSITIVITY -- coordinate w/drive team
         if(turn > 0) {
+            telemetry.addLine("Trying to turn");
             //driveTrain.rotateClockwise(10,1);
             driveTrain.setRotationPower(1);
         }else if(turn < 0) {
+            telemetry.addLine("Trying to turn");
             //driveTrain.rotateCounterClockwise(10,1);
             driveTrain.setRotationPower(-1);
         }else{
