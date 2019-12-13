@@ -8,12 +8,12 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class ColorSensorAuto extends LinearOpMode {
 
-    private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
+    private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
-    private DcMotor leftFrontFlywheel, leftBackFlywheel, rightFrontFlywheel, rightBackFlywheel;
+    private static DcMotor leftFrontFlywheel, leftBackFlywheel, rightFrontFlywheel, rightBackFlywheel;
     private MecanumDrive driveTrain;
-    private final double mecanumCircumference = 32, flywheelCircumference = 16;
-    private final int ticksPerMecanum = 1120, ticksPerFlywheel = 538;
+    private static final double mecanumCircumference = 32, flywheelCircumference = 16;
+    private static final int ticksPerMecanum = 1120, ticksPerFlywheel = 538;
     public enum SkyStoneStatus {NO_STONE, STONE, SKYSTONE}
     ElapsedTime runtime = new ElapsedTime();
 
@@ -31,19 +31,48 @@ public class ColorSensorAuto extends LinearOpMode {
         rightFrontFlywheel = hardwareMap.get(DcMotor.class, "rightFrontFlywheel");
         rightBackFlywheel = hardwareMap.get(DcMotor.class, "rightBackFlywheel");
 
-        driveTrain = MecanumDrive.fromCrossedMotors(leftFrontDrive,rightFrontDrive,leftBackDrive,rightBackDrive, this, 89, 1120);
+        driveTrain = MecanumDrive.fromCrossedMotors(leftFrontDrive, rightFrontDrive, leftBackDrive, rightBackDrive, this, 89, 1120);
         driveTrain.setDefaultDrivePower(1);
 
-        while(opModeIsActive()) {
+        while (opModeIsActive()) {
+
+            driveTrain.driveForwards(24);
+
+            /*
+            replace below code with driveTrain
+
             leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(24)));
             leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(24)));
             rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(24)));
             rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(24)));
+
+            */
+
             // move forward in order to sense blocks
 
-          for(int i=0;i<3;i++) {
-            if(color_sensor.alpha()<=0.2){
-             //pick up the block
+
+            for (int i = 0; i < 3; i++) {
+                if (color_sensor.alpha() <= 0.2) {
+
+                    //pick up the block
+                    driveTrain.strafeInches(8, 0);
+
+                    //turn 90 degrees counterclockwise to pickup skystone
+                    driveTrain.rotateCounterClockwise(90);
+
+                    driveTrain.strafeInches(4, 0);
+
+                    driveTrain.driveForwards(2);
+
+                    flywheelIntake();
+
+                    driveTrain.strafeInches(-8, 0);
+
+                    driveTrain.driveBackwards(4, 1);
+
+                    flywheelOuttake();
+
+                /*
                 leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(4)));
                 leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() - (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(4)));
                 rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(4)));
@@ -52,18 +81,23 @@ public class ColorSensorAuto extends LinearOpMode {
                 leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(5)));
                 rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(5)));
                 rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(5)));
-                //turn 90 degrees counterclockwise to pickup skystone
+                */
+
+                /*
+                turn 90 degrees counterclockwise to pickup skystone:
+
                 leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() - (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(2.5)));
                 leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() - (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(2.5)));
                 rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition() - (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(2.5)));
                 rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition() - (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(2.5)));
-                }
-              }
-          }
+                */
 
+                }
+            }
 
 
         }
+    }
 
 
        /* runtime.reset();
@@ -135,11 +169,11 @@ public class ColorSensorAuto extends LinearOpMode {
             driveTrain.rotateClockwise(90);
             // calibrate spec. val of constant to add
             driveTrain.driveForwards(8*(block+1)+TILE_LENGTH);
+            */
 
 
-        }
-    }
-        */
+
+
 
     public static double findTotalTicks(int ticksPerRev, double circumference, double intendedDist) {
 
@@ -162,5 +196,13 @@ public class ColorSensorAuto extends LinearOpMode {
 
     private static double inchesToCm(double inches) {
         return inches*2.54;
+    }
+    public static void flywheelIntake() {
+        leftFrontFlywheel.setTargetPosition(leftFrontFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
+        rightFrontFlywheel.setTargetPosition(rightFrontFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
+    }
+    public static void flywheelOuttake() {
+        leftBackFlywheel.setTargetPosition(leftBackFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
+        rightBackFlywheel.setTargetPosition(rightBackFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
     }
 }
