@@ -11,13 +11,13 @@ public class ColorSensorAuto extends LinearOpMode {
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
     private static DcMotor leftFrontFlywheel, leftBackFlywheel, rightFrontFlywheel, rightBackFlywheel;
-    private MecanumDrive driveTrain;
+    private static MecanumDrive driveTrain;
     private static final double mecanumCircumference = 32, flywheelCircumference = 16;
     private static final int ticksPerMecanum = 1120, ticksPerFlywheel = 538;
-    public enum SkyStoneStatus {NO_STONE, STONE, SKYSTONE}
+    //public enum SkyStoneStatus {NO_STONE, STONE, SKYSTONE}
     ElapsedTime runtime = new ElapsedTime();
 
-    private final double TILE_LENGTH = inchesToCm(24), FIELD_LENGTH = 6*TILE_LENGTH;
+    private final static double TILE_LENGTH = (24), FIELD_LENGTH = 6*TILE_LENGTH;
     @Override
     public void runOpMode() {
         ColorSensor color_sensor;
@@ -51,26 +51,16 @@ public class ColorSensorAuto extends LinearOpMode {
             // move forward in order to sense blocks
 
 
-            for (int i = 0; i < 3; i++) {
+            for (int i = 6; i > 3; i--) {
                 if (color_sensor.alpha() <= 0.2) {
 
-                    //pick up the block
-                    driveTrain.strafeInches(8, 0);
+                    driveWithSkystone(i);
 
-                    //turn 90 degrees counterclockwise to pickup skystone
-                    driveTrain.rotateCounterClockwise(90);
+                    //drive to the next SkyStone
+                    driveTrain.driveForwards(8 * (9 - i) + 2.5 * TILE_LENGTH);
+                    driveWithSkystone(i-3);
+                    driveTrain.driveForwards(2.5* TILE_LENGTH);
 
-                    driveTrain.strafeInches(4, 0);
-
-                    driveTrain.driveForwards(2);
-
-                    flywheelIntake();
-
-                    driveTrain.strafeInches(-8, 0);
-
-                    driveTrain.driveBackwards(4, 1);
-
-                    flywheelOuttake();
 
                 /*
                 leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(4)));
@@ -194,6 +184,30 @@ public class ColorSensorAuto extends LinearOpMode {
         return finalTicks;
     }
 
+    public static void driveWithSkystone(int i){
+        //strafes to right of the SkyStone in middle of next block
+        driveTrain.strafeInches(8, 0);
+
+        //turn 90 degrees counterclockwise to pickup  SkyStone
+        driveTrain.rotateCounterClockwise(90);
+
+        //strafe to knock out next block to line up with SkyStone
+        driveTrain.strafeInches(4, 0);
+
+        //drive forwards to be close to the SkyStone for intake
+        driveTrain.driveForwards(2);
+
+        flywheelIntake();
+
+        //move out of the line of stones
+        driveTrain.strafeInches(-8, 0);
+
+        //drive backwards to other side of field
+        driveTrain.driveBackwards(8 * (6 - i) + 2.5 * TILE_LENGTH, 1);
+
+        flywheelOuttake();
+    }
+
     private static double inchesToCm(double inches) {
         return inches*2.54;
     }
@@ -206,3 +220,4 @@ public class ColorSensorAuto extends LinearOpMode {
         rightBackFlywheel.setTargetPosition(rightBackFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
     }
 }
+
