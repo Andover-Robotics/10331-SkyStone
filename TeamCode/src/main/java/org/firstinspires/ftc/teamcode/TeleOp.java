@@ -63,12 +63,12 @@ public class TeleOp extends OpMode {
     //NEW FLYWHEELS
     private DcMotor leftFrontFlywheel, leftBackFlywheel, rightFrontFlywheel, rightBackFlywheel;
     // boolean to see if Flywheels are running
-    private boolean runFlywheelsForward = false, runFlywheelsBackwards = false, stop=false;
+    private boolean runFlywheelsForward = false, runFlywheelsBackwards = false, stop=false, runServosForward=false, runServosBackward=false;
     //Using ARC-Core's Mecanum Drive class, we initialized a Mecanum Drive as seen below
     private MecanumDrive driveTrain;
 
     // New servo to move foundation
-    //private Servo servo;
+    private Servo servo;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -89,7 +89,7 @@ public class TeleOp extends OpMode {
         rightFrontFlywheel = hardwareMap.get(DcMotor.class, "rightFrontFlywheel");
         rightBackFlywheel = hardwareMap.get(DcMotor.class, "rightBackFlywheel");
 
-        //servo = hardwareMap.get(Servo.class, "servo");
+        servo = hardwareMap.get(Servo.class, "servo");
 
         // Initialize our Mecanum Drive using our motors as parameters
         // Set default power of mecanum drive to 1.0
@@ -232,6 +232,8 @@ public class TeleOp extends OpMode {
             }
         }*/
 
+
+
         if (!runFlywheelsBackwards && !runFlywheelsForward) {
             leftFrontFlywheel.setPower(0);
             rightFrontFlywheel.setPower(0);
@@ -263,6 +265,25 @@ public class TeleOp extends OpMode {
             }
         }*/
 
+        if (gamepad1.a) {
+            runServosForward = true;
+            runServosBackward = false;
+        }else if (gamepad1.b) {
+            runServosBackward = true;
+            runServosForward = false;
+        }else if (gamepad1.x) {
+            runServosForward = false;
+            runServosBackward = false;
+        }
+
+        if (!runServosBackward && !runServosForward) {
+            servo.setPosition(servo.getPosition() + 90);
+        }else if (runServosForward) {
+            servo.setPosition(servo.getPosition() - 90);
+        }else {
+            servo.setPosition(servo.getPosition());
+        }
+
 
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
@@ -276,6 +297,7 @@ public class TeleOp extends OpMode {
         leftFrontDrive.setPower(leftfrontPower);
         rightFrontDrive.setPower(rightfrontPower);
         */
+
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
     }
