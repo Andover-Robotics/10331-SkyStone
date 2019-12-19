@@ -51,13 +51,14 @@ public class AutoNoSensor extends LinearOpMode {
             // move forward in order to sense blocks
 
 
-            for (int i = 6; i > 3; i--) {
+            //for (int i = 6; i > 3; i--) {
                 //if (color_sensor.alpha() <= 0.2) {
-
+                    int i = 6;
                     driveWithSkystone(i);
 
                     //drive to the next SkyStone
-                    driveTrain.driveForwards(8 * (9 - i) + 2.5 * TILE_LENGTH);
+                    driveTrain.driveForwards(8 * (7 - i) + 2.5 * TILE_LENGTH);//in this version, grabs the one behind the original
+                    //this gives us a 2/3 chance of getting 12 points and a 1/3 chance of getting 4!
                     //brings skystone to building platform
                     driveWithSkystone(i-3);
                     //drive back to first position
@@ -85,7 +86,7 @@ public class AutoNoSensor extends LinearOpMode {
                 */
 
                 //}
-            }
+            //}
 
 
         }
