@@ -94,8 +94,11 @@ public class ColorSensorAuto extends LinearOpMode {
                 */
 
                 }
-            }
+                else {
+                    driveTrain.strafeInches(8, 0);
+                }
 
+            }
 
         }
     }
