@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Auto w/ Sensor", group = "Linear Opmode")
-public class ColorSensorAuto extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Auto w/o Sensor", group = "Linear Opmode")
+public class AutoNoSensor extends LinearOpMode {
 
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
@@ -24,9 +24,8 @@ public class ColorSensorAuto extends LinearOpMode {
 
         runtime.reset();
 
-        telemetry.addLine("This started");
-        ColorSensor color_sensor;
-        color_sensor = hardwareMap.get(ColorSensor.class, "color_sensor");
+        //ColorSensor color_sensor;
+        //color_sensor = hardwareMap.get(ColorSensor.class, "color_sensor");
         leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontDrive");
         leftBackDrive = hardwareMap.get(DcMotor.class, "leftBackDrive");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontDrive");
@@ -43,10 +42,6 @@ public class ColorSensorAuto extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition());
-            rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition());
-            leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition());
-            rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition());
             driveTrain.driveForwards(24);
 
             /*
@@ -62,14 +57,17 @@ public class ColorSensorAuto extends LinearOpMode {
             // move forward in order to sense blocks
 
 
-            for (int i = 6; i > 3; i--) {
-                if (color_sensor.alpha() <= 0.2) {
-
+            //for (int i = 6; i > 3; i--) {
+                //if (color_sensor.alpha() <= 0.2) {
+                    int i = 6;
                     driveWithSkystone(i);
 
                     //drive to the next SkyStone
-                    driveTrain.driveForwards(8 * (9 - i) + 2.5 * TILE_LENGTH);
+                    driveTrain.driveForwards(8 * (7 - i) + 2.5 * TILE_LENGTH);//in this version, grabs the one behind the original
+                    //this gives us a 2/3 chance of getting 12 points and a 1/3 chance of getting 4!
+                    //brings skystone to building platform
                     driveWithSkystone(i-3);
+                    //drive back to first position
                     driveTrain.driveForwards(2.5* TILE_LENGTH);
 
 
@@ -93,12 +91,9 @@ public class ColorSensorAuto extends LinearOpMode {
                 rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition() - (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(2.5)));
                 */
 
-                }
-                else {
-                    driveTrain.strafeInches(8, 0);
-                }
+                //}
+            //}
 
-            }
 
         }
     }
