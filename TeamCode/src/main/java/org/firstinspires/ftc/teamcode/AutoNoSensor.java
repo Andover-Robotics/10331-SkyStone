@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Auto w/o Sensor", group = "Linear Opmode")
 public class AutoNoSensor extends LinearOpMode {
 
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
@@ -20,8 +21,11 @@ public class AutoNoSensor extends LinearOpMode {
     private final static double TILE_LENGTH = (24), FIELD_LENGTH = 6*TILE_LENGTH;
     @Override
     public void runOpMode() {
-        ColorSensor color_sensor;
-        color_sensor = hardwareMap.get(ColorSensor.class, "color_sensor");
+
+        runtime.reset();
+
+        //ColorSensor color_sensor;
+        //color_sensor = hardwareMap.get(ColorSensor.class, "color_sensor");
         leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontDrive");
         leftBackDrive = hardwareMap.get(DcMotor.class, "leftBackDrive");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontDrive");
@@ -33,6 +37,8 @@ public class AutoNoSensor extends LinearOpMode {
 
         driveTrain = MecanumDrive.fromCrossedMotors(leftFrontDrive, rightFrontDrive, leftBackDrive, rightBackDrive, this, 89, 1120);
         driveTrain.setDefaultDrivePower(1);
+
+        waitForStart();
 
         while (opModeIsActive()) {
 
