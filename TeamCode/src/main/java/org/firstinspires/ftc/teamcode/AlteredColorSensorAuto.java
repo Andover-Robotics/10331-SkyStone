@@ -47,7 +47,7 @@ public class AlteredColorSensorAuto extends LinearOpMode {
             rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition());
             leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition());
             rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition());
-            driveTrain.driveForwards(24);
+            drive(24);
 
             /*
             replace below code with driveTrain
@@ -68,9 +68,9 @@ public class AlteredColorSensorAuto extends LinearOpMode {
                     driveWithSkystone(i);
 
                     //drive to the next SkyStone
-                    driveTrain.driveForwards(8 * (9 - i) + 2.5 * TILE_LENGTH);
+                    drive(8 * (9 - i) + 2.5 * TILE_LENGTH);
                     driveWithSkystone(i-3);
-                    driveTrain.driveForwards(2.5* TILE_LENGTH);
+                    drive(2.5* TILE_LENGTH);
 
 
                 /*
@@ -103,7 +103,7 @@ public class AlteredColorSensorAuto extends LinearOpMode {
         }
     }
 
-    public static void drive(int distance){
+    public static void drive(double distance){
         leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(distance)));
         leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(distance)));
         rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(distance)));
@@ -216,7 +216,7 @@ public class AlteredColorSensorAuto extends LinearOpMode {
         driveTrain.strafeInches(4, 0);
 
         //drive forwards to be close to the SkyStone for intake
-        driveTrain.driveForwards(2);
+        drive(2);
 
         flywheelIntake();
 
@@ -224,7 +224,7 @@ public class AlteredColorSensorAuto extends LinearOpMode {
         driveTrain.strafeInches(-8, 0);
 
         //drive backwards to other side of field
-        driveTrain.driveBackwards(8 * (6 - i) + 2.5 * TILE_LENGTH, 1);
+        drive(-8 * (6 - i) + 2.5 * TILE_LENGTH);
 
         flywheelOuttake();
     }
