@@ -105,10 +105,29 @@ public class AlteredColorSensorAuto extends LinearOpMode {
     }
 
     public static void drive(double distance){
+
+        //creates array of motors and loops through for efficiency
+        DcMotor[] motors = {leftFrontDrive, rightFrontDrive, leftBackDrive, rightBackDrive};
+
+        //you actually need to set the mode to stop_and_reset_encoder BEFORE setting target position
+        for (DcMotor motor : motors) {
+            motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }
+
         leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(distance)));
         leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(distance)));
         rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(distance)));
         rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(distance)));
+
+        //then after setting position, you ALSO set power AND set mode to run to position
+        for (DcMotor motor : motors) {
+            motor.setPower(1);
+            motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+
+        while (leftFrontDrive.isBusy() || leftBackDrive.isBusy() || rightFrontDrive.isBusy() || rightBackDrive.isBusy()) {
+            //does nothing -- this is effectively the sleep function but based on a conditional
+        }
     }
 
 
@@ -183,7 +202,35 @@ public class AlteredColorSensorAuto extends LinearOpMode {
             driveTrain.driveForwards(8*(block+1)+TILE_LENGTH);
             */
 
-    //TODO: create turning method
+    public static void turn (double degrees, int direction) {
+        //direction = 1 to turn left, -1 to turn right
+
+        //creates array of motors and loops through for efficiency
+        DcMotor[] motors = {leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive};
+
+        //you actually need to set the mode to stop_and_reset_encoder BEFORE setting target position
+        for (DcMotor motor : motors) {
+            motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }
+
+        int distance = 42;//TODO: figure out this distance value
+
+        leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(distance)));
+        leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(distance)));
+        rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(distance)));
+        rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(distance)));
+
+        for (int i = 0; i < motors.length; i++) {
+            DcMotor motor = motors[i];
+            if (i < 2) motor.setPower(direction*1);
+            else motor.setPower(-1*direction);
+            motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+
+        while (leftFrontDrive.isBusy() || leftBackDrive.isBusy() || rightFrontDrive.isBusy() || rightBackDrive.isBusy()) {
+            //does nothing -- this is effectively the sleep function but based on a conditional
+        }
+    }
 
 
 
