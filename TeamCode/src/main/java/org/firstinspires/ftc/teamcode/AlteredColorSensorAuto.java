@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Auto w/ Sensor", group = "Linear Opmode")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Tank Drive Autonomous", group = "Linear Opmode")
 public class AlteredColorSensorAuto extends LinearOpMode {
 
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
@@ -95,6 +95,7 @@ public class AlteredColorSensorAuto extends LinearOpMode {
 
                 }
                 else {
+                    //TODO: change this to turning and moving
                     driveTrain.strafeInches(8, 0);
                 }
 
@@ -182,7 +183,7 @@ public class AlteredColorSensorAuto extends LinearOpMode {
             driveTrain.driveForwards(8*(block+1)+TILE_LENGTH);
             */
 
-
+    //TODO: create turning method
 
 
 
@@ -210,9 +211,11 @@ public class AlteredColorSensorAuto extends LinearOpMode {
         driveTrain.strafeInches(8, 0);
 
         //turn 90 degrees counterclockwise to pickup  SkyStone
+        //TODO: change this to actual turning
         driveTrain.rotateCounterClockwise(90);
 
         //strafe to knock out next block to line up with SkyStone
+        //TODO: change this to actual turning and moving
         driveTrain.strafeInches(4, 0);
 
         //drive forwards to be close to the SkyStone for intake
@@ -221,6 +224,7 @@ public class AlteredColorSensorAuto extends LinearOpMode {
         flywheelIntake();
 
         //move out of the line of stones
+        //TODO: change this to actual turning and moving
         driveTrain.strafeInches(-8, 0);
 
         //drive backwards to other side of field
