@@ -222,7 +222,8 @@ public class AlteredColorSensorAuto extends LinearOpMode {
 
         for (int i = 0; i < motors.length; i++) {
             DcMotor motor = motors[i];
-            if (i < 2) motor.setPower(direction*1);
+            if (i < 2) motor.setPower(direction);
+            //which motor is 1 and which is -1 depends on direction param (i < 2 indicates it's a left motor)
             else motor.setPower(-1*direction);
             motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
