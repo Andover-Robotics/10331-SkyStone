@@ -19,6 +19,8 @@ public class AlteredColorSensorAuto extends LinearOpMode {
     ElapsedTime runtime = new ElapsedTime();
 
     private final static double TILE_LENGTH = (24), FIELD_LENGTH = 6*TILE_LENGTH;
+    private final static int ALLIANCE = 1;//1 means on right side of field, -1 means left
+
     @Override
     public void runOpMode() {
 
@@ -96,7 +98,9 @@ public class AlteredColorSensorAuto extends LinearOpMode {
                 }
                 else {
                     //TODO: change this to turning and moving
-                    driveTrain.strafeInches(8, 0);
+                    //driveTrain.strafeInches(8, 0);
+                    turn(90, -1*ALLIANCE);//left turn if on right side, vice versa
+                    drive(8);
                 }
 
             }
@@ -256,15 +260,20 @@ public class AlteredColorSensorAuto extends LinearOpMode {
 
     public static void driveWithSkystone(int i){
         //strafes to right of the SkyStone in middle of next block
-        driveTrain.strafeInches(8, 0);
+        turn(90, 1);
+        drive(8);
 
-        //turn 90 degrees counterclockwise to pickup  SkyStone
+        //turn 90 degrees counterclockwise to pickup  SkyStone (clockwise if on left side)
         //TODO: change this to actual turning
-        driveTrain.rotateCounterClockwise(90);
+        //driveTrain.rotateCounterClockwise(90);
+        turn(90, 1*ALLIANCE);//is this actually necessary?
 
-        //strafe to knock out next block to line up with SkyStone
+        //turn & move to knock out next block to line up with SkyStone
         //TODO: change this to actual turning and moving
-        driveTrain.strafeInches(4, 0);
+        //driveTrain.strafeInches(4, 0);
+        turn(90, -1*ALLIANCE);//is this necessary (it is if the top one is there, but that doesn't look like an option)
+        drive(4);
+        turn(90, 1*ALLIANCE);
 
         //drive forwards to be close to the SkyStone for intake
         drive(2);
@@ -273,7 +282,10 @@ public class AlteredColorSensorAuto extends LinearOpMode {
 
         //move out of the line of stones
         //TODO: change this to actual turning and moving
-        driveTrain.strafeInches(-8, 0);
+        //driveTrain.strafeInches(-8, 0);
+        turn(90, 1*ALLIANCE);
+        drive(8);
+        turn(90, -1*ALLIANCE);
 
         //drive backwards to other side of field
         drive(-8 * (6 - i) + 2.5 * TILE_LENGTH);
