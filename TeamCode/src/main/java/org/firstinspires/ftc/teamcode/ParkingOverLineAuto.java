@@ -4,9 +4,10 @@ import com.andoverrobotics.core.drivetrain.MecanumDrive;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Tank Drive Autonomous", group = "Linear Opmode")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Parking Autonomous", group = "Linear Opmode")
 public class ParkingOverLineAuto extends LinearOpMode {
 
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
@@ -44,6 +45,9 @@ public class ParkingOverLineAuto extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+
+            rightFrontDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+            rightBackDrive.setDirection(DcMotorSimple.Direction.REVERSE);
 
             leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition());
             rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition());
