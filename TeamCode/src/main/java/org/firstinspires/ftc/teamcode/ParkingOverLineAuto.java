@@ -46,8 +46,8 @@ public class ParkingOverLineAuto extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            rightFrontDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-            rightBackDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+            leftFrontDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+            leftBackDrive.setDirection(DcMotorSimple.Direction.REVERSE);
 
             leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition());
             rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition());
