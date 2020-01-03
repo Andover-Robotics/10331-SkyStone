@@ -38,8 +38,8 @@ public class AlteredColorSensorAuto extends LinearOpMode {
         rightFrontFlywheel = hardwareMap.get(DcMotor.class, "rightFrontFlywheel");
         rightBackFlywheel = hardwareMap.get(DcMotor.class, "rightBackFlywheel");
 
-        driveTrain = MecanumDrive.fromCrossedMotors(leftFrontDrive, rightFrontDrive, leftBackDrive, rightBackDrive, this, 89, 1120);
-        driveTrain.setDefaultDrivePower(1);
+        //driveTrain = MecanumDrive.fromCrossedMotors(leftFrontDrive, rightFrontDrive, leftBackDrive, rightBackDrive, this, 89, 1120);
+        //driveTrain.setDefaultDrivePower(1);
 
         waitForStart();
 
