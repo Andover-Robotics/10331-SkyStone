@@ -4,6 +4,7 @@ import com.andoverrobotics.core.drivetrain.MecanumDrive;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Tank Drive Autonomous", group = "Linear Opmode")
@@ -22,7 +23,7 @@ public class AlteredColorSensorAuto extends LinearOpMode {
     private final static int ALLIANCE = 1;//1 means on right side of field, -1 means left
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
 
         runtime.reset();
 
@@ -44,6 +45,9 @@ public class AlteredColorSensorAuto extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+
+            leftFrontDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+            leftBackDrive.setDirection(DcMotorSimple.Direction.REVERSE);
 
             leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition());
             rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition());
@@ -79,7 +83,7 @@ public class AlteredColorSensorAuto extends LinearOpMode {
                 leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(4)));
                 leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() - (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(4)));
                 rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(4)));
-                rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition() - (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(4)));
+                rightBackDrive.setTargetPositioaqqqqqqqqqqqqqqqqqn(rightBackDrive.getCurrentPosition() - (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(4)));
                 leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(5)));
                 leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(5)));
                 rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(5)));
@@ -124,8 +128,13 @@ public class AlteredColorSensorAuto extends LinearOpMode {
         rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(distance)));
 
         //then after setting position, you ALSO set power AND set mode to run to position
-        for (DcMotor motor : motors) {
-            motor.setPower(1);
+        for (int i = 0; i < motors.length; i++) {
+            DcMotor motor = motors[i];
+            if (i % 2 == 1) {
+                motor.setPower(0.75);
+            }else {
+                motor.setPower(1);
+            }
             motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
 
@@ -258,7 +267,7 @@ public class AlteredColorSensorAuto extends LinearOpMode {
         return finalTicks;
     }
 
-    public static void driveWithSkystone(int i){
+    public static void driveWithSkystone(int i) throws InterruptedException {
         //strafes to right of the SkyStone in middle of next block
         turn(90, 1);
         drive(8);
@@ -296,13 +305,20 @@ public class AlteredColorSensorAuto extends LinearOpMode {
     private static double inchesToCm(double inches) {
         return inches*2.54;
     }
-    public static void flywheelIntake() {
-        leftFrontFlywheel.setTargetPosition(leftFrontFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
-        rightFrontFlywheel.setTargetPosition(rightFrontFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
+    public static void flywheelIntake() throws InterruptedException {
+        leftFrontFlywheel.setPower(1);
+        rightFrontFlywheel.setPower(1);
+        Thread.sleep(2000);
+        //leftFrontFlywheel.setTargetPosition(leftFrontFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
+        //rightFrontFlywheel.setTargetPosition(rightFrontFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
+
     }
-    public static void flywheelOuttake() {
-        leftBackFlywheel.setTargetPosition(leftBackFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
-        rightBackFlywheel.setTargetPosition(rightBackFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
+    public static void flywheelOuttake() throws InterruptedException {
+        leftFrontFlywheel.setPower(-1);
+        rightFrontFlywheel.setPower(-1);
+        Thread.sleep(2000);
+        //leftBackFlywheel.setTargetPosition(leftBackFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
+        //rightBackFlywheel.setTargetPosition(rightBackFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
     }
 }
 

@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 //import com.qualcomm.robotcore.hardware.DcMotorController; // this is for the controller
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Auto", group = "Linear Opmode")
+//@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Auto", group = "Linear Opmode")
 
 public class Auto extends LinearOpMode {
 

@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "real auto", group = "Linear Opmode")
+//@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "real auto", group = "Linear Opmode")
 
 public class TempAutoModified extends LinearOpMode {
 

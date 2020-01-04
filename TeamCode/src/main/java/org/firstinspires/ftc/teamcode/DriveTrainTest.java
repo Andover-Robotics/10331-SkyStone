@@ -54,7 +54,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Drive Train Test", group = "Iterative Opmode")
+//@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Drive Train Test", group = "Iterative Opmode")
 //@Disabled
 public class DriveTrainTest extends OpMode {
     // Declare OpMode members.

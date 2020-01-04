@@ -158,8 +158,8 @@ public class TankDriveTeleOp extends OpMode {
         double driveRight = gamepad1.right_stick_y;
         leftFrontDrive.setPower(driveLeft);
         leftBackDrive.setPower(driveLeft);
-        rightBackDrive.setPower(driveRight);
-        rightFrontDrive.setPower(driveRight);
+        rightBackDrive.setPower(driveRight*0.75);
+        rightFrontDrive.setPower(driveRight*0.75);
 
         //when 'a' button is pressed and front flywheels are not running, set bool to true
         if (gamepad2.a) {

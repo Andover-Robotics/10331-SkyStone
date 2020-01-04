@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Auto w/o Sensor", group = "Linear Opmode")
+//@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Auto w/o Sensor", group = "Linear Opmode")
 public class AutoNoSensor extends LinearOpMode {
 
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;

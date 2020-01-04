@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController; // this is for the controller
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Parking Auto", group = "Linear Opmode")
+//@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Parking Auto", group = "Linear Opmode")
 
 public class ParkAuto extends LinearOpMode {
 

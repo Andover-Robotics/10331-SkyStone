@@ -49,7 +49,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOpNoTurn", group = "Iterative Opmode")
+//@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOpNoTurn", group = "Iterative Opmode")
 //@Disabled
 public class TeleOpNoTurn extends OpMode {
     // Declare OpMode members.

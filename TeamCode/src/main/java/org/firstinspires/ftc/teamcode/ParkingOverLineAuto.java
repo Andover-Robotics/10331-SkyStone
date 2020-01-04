@@ -76,8 +76,13 @@ public class ParkingOverLineAuto extends LinearOpMode {
         rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(distance)));
 
         //then after setting position, you ALSO set power AND set mode to run to position
-        for (DcMotor motor : motors) {
-            motor.setPower(1);
+        for (int i = 0; i < motors.length; i++) {
+            DcMotor motor = motors[i];
+            if (i % 2 == 1) {
+                motor.setPower(0.75);
+            }else {
+                motor.setPower(1);
+            }
             motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
 

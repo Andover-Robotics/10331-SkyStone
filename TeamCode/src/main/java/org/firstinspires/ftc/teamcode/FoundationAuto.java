@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Foundation Auto", group = "Linear Opmode")
+//@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Foundation Auto", group = "Linear Opmode")
 
 public class FoundationAuto extends LinearOpMode {
 
