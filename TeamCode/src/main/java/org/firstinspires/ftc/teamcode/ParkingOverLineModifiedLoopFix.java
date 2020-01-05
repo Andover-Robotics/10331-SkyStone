@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.andoverrobotics.core.drivetrain.MecanumDrive;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -11,9 +10,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 //but we need it in run_to_position mode such that it stops.this means we need to calculate the number of ticks
 //correctly for both the 40 and 60 motors.
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Parking Over Line With Stopping", group = "Linear Opmode")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Parking Over Line Loop Fix", group = "Linear Opmode")
 
-public class ParkingOverLineModified extends LinearOpMode {
+public class ParkingOverLineModifiedLoopFix extends LinearOpMode {
 
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
@@ -55,10 +54,10 @@ public class ParkingOverLineModified extends LinearOpMode {
             leftFrontDrive.setDirection(DcMotorSimple.Direction.REVERSE);
             leftBackDrive.setDirection(DcMotorSimple.Direction.REVERSE);
 
-//            leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition());
-//            rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition());
-//            leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition());
-//            rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition());
+            leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition());
+            rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition());
+            leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition());
+            rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition());
             drive(20);
 
             break;
@@ -94,7 +93,7 @@ public class ParkingOverLineModified extends LinearOpMode {
         //this conditional is an OR in this version because the LF wheel will eventually catch itself up,
         //meaning it might have a wiggling effect but will eventually end up aligned
         while (leftFrontDrive.isBusy() || leftBackDrive.isBusy() || rightFrontDrive.isBusy() || rightBackDrive.isBusy()) {
-
+            if (leftFrontDrive.getTargetPosition() == leftFrontDrive.getCurrentPosition()) break;
         }
 
         for (DcMotor motor : motors) {

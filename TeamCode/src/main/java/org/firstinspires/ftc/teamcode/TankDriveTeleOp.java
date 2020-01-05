@@ -195,7 +195,7 @@ public class TankDriveTeleOp extends OpMode {
 
 
         if (!runFlywheelsBackwards && !runFlywheelsForward) {
-            leftFrontFlywheel.setPower(0);
+             leftFrontFlywheel.setPower(0);
             rightFrontFlywheel.setPower(0);
         }else if (runFlywheelsForward) {
             leftFrontFlywheel.setPower(1);
