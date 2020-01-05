@@ -53,7 +53,7 @@ public class AlteredColorSensorAuto extends LinearOpMode {
             rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition());
             leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition());
             rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition());
-            drive(24);
+            //drive(24);
 
             /*
             replace below code with driveTrain
@@ -131,14 +131,14 @@ public class AlteredColorSensorAuto extends LinearOpMode {
         for (int i = 0; i < motors.length; i++) {
             DcMotor motor = motors[i];
             if (i % 2 == 1) {
-                motor.setPower(0.75);
+                motor.setPower(0.5);
             }else {
                 motor.setPower(1);
             }
             motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
 
-        while (leftFrontDrive.isBusy() || leftBackDrive.isBusy() || rightFrontDrive.isBusy() || rightBackDrive.isBusy()) {
+        while (leftFrontDrive.isBusy() && leftBackDrive.isBusy() && rightFrontDrive.isBusy() && rightBackDrive.isBusy()) {
             //does nothing -- this is effectively the sleep function but based on a conditional
         }
     }
@@ -226,7 +226,7 @@ public class AlteredColorSensorAuto extends LinearOpMode {
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
 
-        int distance = 42;//TODO: figure out this distance value
+        int distance = 4;//TODO: figure out this distance value
 
         leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(distance)));
         leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(distance)));
@@ -308,7 +308,9 @@ public class AlteredColorSensorAuto extends LinearOpMode {
     public static void flywheelIntake() throws InterruptedException {
         leftFrontFlywheel.setPower(1);
         rightFrontFlywheel.setPower(1);
-        Thread.sleep(2000);
+        drive(3);
+        leftFrontFlywheel.setPower(0);
+        rightFrontFlywheel.setPower(0);
         //leftFrontFlywheel.setTargetPosition(leftFrontFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
         //rightFrontFlywheel.setTargetPosition(rightFrontFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
 
@@ -316,7 +318,9 @@ public class AlteredColorSensorAuto extends LinearOpMode {
     public static void flywheelOuttake() throws InterruptedException {
         leftFrontFlywheel.setPower(-1);
         rightFrontFlywheel.setPower(-1);
-        Thread.sleep(2000);
+        drive(3);
+        leftFrontFlywheel.setPower(0);
+        rightFrontFlywheel.setPower(0);
         //leftBackFlywheel.setTargetPosition(leftBackFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
         //rightBackFlywheel.setTargetPosition(rightBackFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
     }

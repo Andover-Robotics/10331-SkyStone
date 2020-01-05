@@ -1,19 +1,19 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.andoverrobotics.core.drivetrain.MecanumDrive;
+import com.andoverrobotics.core.drivetrain.TankDrive;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Parking Overline Autonomous", group = "Linear Opmode")
-public class ParkingOverLineAuto extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Tank Drive Test", group = "Linear Opmode")
+public class TankDriveTest extends LinearOpMode {
 
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
     private static DcMotor leftFrontFlywheel, leftBackFlywheel, rightFrontFlywheel, rightBackFlywheel;
-    private static MecanumDrive driveTrain;
+    private static TankDrive driveTrain;
     private static final double mecanumCircumference = 32, flywheelCircumference = 16;
     private static final int ticksPerMecanum = 1120, ticksPerFlywheel = 538;
     //public enum SkyStoneStatus {NO_STONE, STONE, SKYSTONE}
@@ -39,25 +39,28 @@ public class ParkingOverLineAuto extends LinearOpMode {
         rightFrontFlywheel = hardwareMap.get(DcMotor.class, "rightFrontFlywheel");
         rightBackFlywheel = hardwareMap.get(DcMotor.class, "rightBackFlywheel");
 
-        //driveTrain = MecanumDrive.fromCrossedMotors(leftFrontDrive, rightFrontDrive, leftBackDrive, rightBackDrive, this, 89, 1120);
-        //driveTrain.setDefaultDrivePower(1);
+        driveTrain = TankDrive.fromMotors(leftFrontDrive, rightFrontDrive, leftBackDrive, rightBackDrive, this, 35, 1120);
+        driveTrain.setDefaultDrivePower(1);
 
         waitForStart();
 
         while (opModeIsActive()) {
-
             leftFrontDrive.setDirection(DcMotorSimple.Direction.REVERSE);
             leftBackDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-
+            /*
             leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition());
             rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition());
             leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition());
-            rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition());
-            drive(12);
-
-            }
-
+            rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition());*/
+            leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            driveTrain.driveForwards(12, 1);
         }
+
+    }
+
 
 
     public static void drive(double distance){
@@ -78,8 +81,11 @@ public class ParkingOverLineAuto extends LinearOpMode {
         //then after setting position, you ALSO set power AND set mode to run to position
         for (int i = 0; i < motors.length; i++) {
             DcMotor motor = motors[i];
-            if (i == 0) motor.setPower(1);
-            else motor.setPower(0.66);
+            if (i % 2 == 1) {
+                motor.setPower(0.25);
+            }else {
+                motor.setPower(1);
+            }
             motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
