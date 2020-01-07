@@ -6,9 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-//this class exists to change the ticks. in the other class, the mode on the encoders is set to run_with_encoder,
-//but we need it in run_to_position mode such that it stops.this means we need to calculate the number of ticks
-//correctly for both the 40 and 60 motors.
+//A simple OpMode that parks over the line without the use of an encoder where the back wheels are positioned 2 tiles away.
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Parking Over Line No encoder", group = "Linear Opmode")
 
