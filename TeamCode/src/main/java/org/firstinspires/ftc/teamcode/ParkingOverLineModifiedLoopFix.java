@@ -33,8 +33,10 @@ public class ParkingOverLineModifiedLoopFix extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        runtime.reset();
+        telemetry.clearAll();
 
+        runtime.reset();
+        telemetry.addData("is this working", 32);
         telemetry.addLine("This started");
         ColorSensor color_sensor = hardwareMap.get(ColorSensor.class, "color_sensor");
         leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontDrive");
@@ -48,6 +50,7 @@ public class ParkingOverLineModifiedLoopFix extends LinearOpMode {
 
         //driveTrain = MecanumDrive.fromCrossedMotors(leftFrontDrive, rightFrontDrive, leftBackDrive, rightBackDrive, this, 89, 1120);
         //driveTrain.setDefaultDrivePower(1);
+        telemetry.addLine("Does this work");
 
         waitForStart();
 
@@ -55,12 +58,12 @@ public class ParkingOverLineModifiedLoopFix extends LinearOpMode {
 
             leftFrontDrive.setDirection(DcMotorSimple.Direction.REVERSE);
             leftBackDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-
-            leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition());
-            rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition());
-            leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition());
-            rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition());
-            drive(20);
+            telemetry.addLine("OpMode is active");
+//            leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition());
+//            rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition());
+//            leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition());
+//            rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition());
+            this.drive(20);
 
             break;
 
@@ -69,7 +72,8 @@ public class ParkingOverLineModifiedLoopFix extends LinearOpMode {
     }
 
 
-    public static void drive(double distance){
+    public void drive(double distance){
+        telemetry.addLine("Got here");
         //< 2 is front, >=2 is back
         //odd #s are right, even #s are left
 
@@ -95,10 +99,12 @@ public class ParkingOverLineModifiedLoopFix extends LinearOpMode {
         //this conditional is an OR in this version because the LF wheel will eventually catch itself up,
         //meaning it might have a wiggling effect but will eventually end up aligned
         while (leftFrontDrive.isBusy() || leftBackDrive.isBusy() || rightFrontDrive.isBusy() || rightBackDrive.isBusy()) {
+            telemetry.addLine("Still busy");
             if (leftFrontDrive.getTargetPosition() == leftFrontDrive.getCurrentPosition()) {
                 for (DcMotor motor : motors) {
                     motor.setPower(0);
                     motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    telemetry.addLine("Reached target position");
                 }
             }
         }

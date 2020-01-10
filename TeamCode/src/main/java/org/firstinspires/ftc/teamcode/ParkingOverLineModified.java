@@ -27,7 +27,7 @@ public class ParkingOverLineModified extends LinearOpMode {
     private final static double TILE_LENGTH = (24), FIELD_LENGTH = 6*TILE_LENGTH;
     private final static int ALLIANCE = 1;//1 means on right side of field, -1 means left
     private final static double BACK_WHEEL_CIRCUMFERENCE = inchesToCm(4*Math.PI);
-    private final static double FRONT_WHEEL_CIRCUMFERENCE = inchesToCm(3*Math.PI);
+    private final static double FRONT_WHEEL_CIRCUMFERENCE = inchesToCm(4*Math.PI);
 
     @Override
     public void runOpMode() {
@@ -59,7 +59,7 @@ public class ParkingOverLineModified extends LinearOpMode {
 //            rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition());
 //            leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition());
 //            rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition());
-            drive(20);
+            this.drive(2);
 
             break;
 
@@ -68,7 +68,7 @@ public class ParkingOverLineModified extends LinearOpMode {
     }
 
 
-    public static void drive(double distance){
+    public void drive(double distance){
         //< 2 is front, >=2 is back
         //odd #s are right, even #s are left
 
@@ -80,25 +80,37 @@ public class ParkingOverLineModified extends LinearOpMode {
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
 
-        leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPer40, FRONT_WHEEL_CIRCUMFERENCE, inchesToCm(distance)));
-        leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() + (int) findTotalTicks(ticksPer40, BACK_WHEEL_CIRCUMFERENCE, inchesToCm(distance)));
-        rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPer40, FRONT_WHEEL_CIRCUMFERENCE, inchesToCm(distance)));
-        rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition() + (int) findTotalTicks(ticksPer40, BACK_WHEEL_CIRCUMFERENCE, inchesToCm(distance)));
+        leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() - (int) findTotalTicks(ticksPer40, FRONT_WHEEL_CIRCUMFERENCE, inchesToCm(distance)));
+        leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() - (int) findTotalTicks(ticksPer40, BACK_WHEEL_CIRCUMFERENCE, inchesToCm(distance)));
+        rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition() - (int) findTotalTicks(ticksPer40, FRONT_WHEEL_CIRCUMFERENCE, inchesToCm(distance)));
+        rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition() - (int) findTotalTicks(ticksPer40, BACK_WHEEL_CIRCUMFERENCE, inchesToCm(distance)));
 
         //then after setting position, you ALSO set power AND set mode to run to position
         for (DcMotor motor : motors) {
-            motor.setPower(1);
             motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motor.setPower(1);
         }
 
         //this conditional is an OR in this version because the LF wheel will eventually catch itself up,
         //meaning it might have a wiggling effect but will eventually end up aligned
-        while (leftFrontDrive.isBusy() || leftBackDrive.isBusy() || rightFrontDrive.isBusy() || rightBackDrive.isBusy()) {
-
+        while (/*leftFrontDrive.isBusy() || leftBackDrive.isBusy() ||*/ rightFrontDrive.isBusy() /*|| rightBackDrive.isBusy()*/) {
+            telemetry.addLine("This is busy");
+            for (DcMotor motor : motors) {
+                //Telemetry debug (thanks Michael)
+                telemetry.addData("motor currPos -> targetPos", "%d -> %d", motor.getCurrentPosition(), motor.getTargetPosition());
+                telemetry.addData("mode & isBusy?", "%s & %s", motor.getMode(), motor.isBusy() ? "yes" : "no");
+            }
+            telemetry.update();
+            idle();
         }
 
         for (DcMotor motor : motors) {
             motor.setPower(0);
+            //motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }
+
+        for (DcMotor motor : motors) {
+            motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             //motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
     }
