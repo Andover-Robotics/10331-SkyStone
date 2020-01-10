@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Parking Overline Autonomous", group = "Linear Opmode")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Parking Overline, Autonomous", group = "Linear Opmode")
 public class ParkingOverLineAuto extends LinearOpMode {
 
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
@@ -114,7 +114,7 @@ public class ParkingOverLineAuto extends LinearOpMode {
 
 
     private static double inchesToCm(double inches) {
-        return inches*2.54;
+        return inches * 2.54;
     }
 
 }

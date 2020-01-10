@@ -30,14 +30,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.andoverrobotics.core.drivetrain.MecanumDrive;
-import com.andoverrobotics.core.utilities.Coordinate;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 
 /**
@@ -54,9 +50,9 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Tank Drive TeleOp", group = "Iterative Opmode")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Tank Drive TeleOp With Encoded Flywheels", group = "Iterative Opmode")
 //@Disabled
-public class TankDriveTeleOp extends OpMode {
+public class TankDriveTeleOpWithEncoderFlywheels extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
@@ -66,6 +62,9 @@ public class TankDriveTeleOp extends OpMode {
     private boolean runFlywheelsForward = false, runFlywheelsBackwards = false, stop=false, runServosForward=false, runServosBackward=false;
     //Using ARC-Core's Mecanum Drive class, we initialized a Mecanum Drive as seen below
     private MecanumDrive driveTrain;
+    private final int ticksPerFlywheel = 538;
+    private final double flywheelCircumference = 16;
+    private int distance;
 
     // New servo to move foundation
     private Servo servo;
@@ -116,11 +115,15 @@ public class TankDriveTeleOp extends OpMode {
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
+
+        distance=1;
+
     }
 
     /*
      * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
      */
+
     @Override
     public void init_loop() {
     }
@@ -198,8 +201,8 @@ public class TankDriveTeleOp extends OpMode {
              leftFrontFlywheel.setPower(0);
             rightFrontFlywheel.setPower(0);
         }else if (runFlywheelsForward) {
-            leftFrontFlywheel.setPower(1);
-            rightFrontFlywheel.setPower(-1);
+            leftFrontFlywheel.setTargetPosition(leftFrontDrive.getCurrentPosition() - (int) findTotalTicks(ticksPerFlywheel, flywheelCircumference, inchesToCm(distance)));
+            rightFrontFlywheel.setTargetPosition(-1);
         }else {
             leftFrontFlywheel.setPower(-1);
             rightFrontFlywheel.setPower(1);
@@ -270,7 +273,31 @@ public class TankDriveTeleOp extends OpMode {
     public void stop() {
     }
 
+    public static double findTotalTicks(int ticksPerRev, double circumference, double intendedDist) {
+
+
+        double amtOfWheelUsed = intendedDist / circumference;
+
+        double degrees = amtOfWheelUsed * 360;
+
+        double finalTicks = degrees * ticksPerRev / 360;
+
+        /*
+
+        225/360 = x/1120
+        x = 700
+
+         */
+
+        return finalTicks;
+    }
+
+    private static double inchesToCm(double inches) {
+        return inches*2.54;
+    }
+    }
+
 
     //test commit
 
-}
+
