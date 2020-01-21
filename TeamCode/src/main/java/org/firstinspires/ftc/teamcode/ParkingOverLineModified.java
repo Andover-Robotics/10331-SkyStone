@@ -26,8 +26,8 @@ public class ParkingOverLineModified extends LinearOpMode {
 
     private final static double TILE_LENGTH = (24), FIELD_LENGTH = 6*TILE_LENGTH;
     private final static int ALLIANCE = 1;//1 means on right side of field, -1 means left
-    private final static double BACK_WHEEL_CIRCUMFERENCE = inchesToCm(4*Math.PI);
-    private final static double FRONT_WHEEL_CIRCUMFERENCE = inchesToCm(4*Math.PI);
+    private final static double BACK_WHEEL_CIRCUMFERENCE = inchesToCm(4 * Math.PI);
+    private final static double FRONT_WHEEL_CIRCUMFERENCE = inchesToCm(4 * Math.PI);
 
     @Override
     public void runOpMode() {
@@ -93,7 +93,7 @@ public class ParkingOverLineModified extends LinearOpMode {
 
         //this conditional is an OR in this version because the LF wheel will eventually catch itself up,
         //meaning it might have a wiggling effect but will eventually end up aligned
-        while (/*leftFrontDrive.isBusy() || leftBackDrive.isBusy() ||*/ rightFrontDrive.isBusy() /*|| rightBackDrive.isBusy()*/) {
+        while (leftFrontDrive.isBusy() || leftBackDrive.isBusy() || rightFrontDrive.isBusy() || rightBackDrive.isBusy()) {
             telemetry.addLine("This is busy");
             for (DcMotor motor : motors) {
                 //Telemetry debug (thanks Michael)
@@ -103,6 +103,8 @@ public class ParkingOverLineModified extends LinearOpMode {
             if (Math.abs(rightFrontDrive.getCurrentPosition()) > Math.abs(rightFrontDrive.getTargetPosition())) break;
             telemetry.update();
             idle();
+
+            if ((!leftFrontDrive.isBusy() || !leftBackDrive.isBusy() || !rightFrontDrive.isBusy() || !rightBackDrive.isBusy())) break;
         }
 
         for (DcMotor motor : motors) {
@@ -137,7 +139,7 @@ public class ParkingOverLineModified extends LinearOpMode {
 
 
     private static double inchesToCm(double inches) {
-        return inches*2.54;
+        return inches * 2.54;
     }
 
 }
