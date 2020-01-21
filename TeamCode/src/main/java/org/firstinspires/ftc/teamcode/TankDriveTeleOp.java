@@ -149,6 +149,7 @@ public class TankDriveTeleOp extends OpMode {
         count++;
         telemetry.addLine(((Integer)count).toString());
         telemetry.addData("LF Flywheel Power: ",  leftFrontFlywheel.getPower());
+        telemetry.addData("RT Flywheel Power: ", rightFrontFlywheel.getPower());
         // Choose to drive using either Tank Mode, or POV Mode
         // Comment out the method that's not used.  The default below is POV.
 

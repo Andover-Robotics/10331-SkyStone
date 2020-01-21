@@ -49,12 +49,18 @@ public class ParkingOverLineNoEncoder extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            leftFrontDrive.setPower(-1);
-            leftBackDrive.setPower(-1);
-            rightFrontDrive.setPower(1);
-            rightBackDrive.setPower(1);
+            telemetry.addLine(((Integer)color_sensor.alpha()).toString());
+            telemetry.update();
+
+            leftFrontDrive.setPower(0.5);
+            leftBackDrive.setPower(0.5);
+            rightFrontDrive.setPower(0.5);
+            rightBackDrive.setPower(0.5);
 
             sleep(1000);
+
+            telemetry.addLine(((Integer)color_sensor.alpha()).toString());
+            telemetry.update();
 
             leftFrontDrive.setPower(0);
             leftBackDrive.setPower(0);
@@ -62,6 +68,9 @@ public class ParkingOverLineNoEncoder extends LinearOpMode {
             rightBackDrive.setPower(0);
 
             sleep(2000);
+
+            telemetry.addLine(((Integer)color_sensor.alpha()).toString());
+            telemetry.update();
 
             break;
 

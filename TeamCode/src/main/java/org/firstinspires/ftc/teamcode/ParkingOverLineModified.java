@@ -59,7 +59,7 @@ public class ParkingOverLineModified extends LinearOpMode {
 //            rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition());
 //            leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition());
 //            rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition());
-            this.drive(2);
+            this.drive(6);
 
             break;
 
@@ -80,10 +80,10 @@ public class ParkingOverLineModified extends LinearOpMode {
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
 
-        leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() - (int) findTotalTicks(ticksPer40, FRONT_WHEEL_CIRCUMFERENCE, inchesToCm(distance)));
-        leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() - (int) findTotalTicks(ticksPer40, BACK_WHEEL_CIRCUMFERENCE, inchesToCm(distance)));
-        rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition() - (int) findTotalTicks(ticksPer40, FRONT_WHEEL_CIRCUMFERENCE, inchesToCm(distance)));
-        rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition() - (int) findTotalTicks(ticksPer40, BACK_WHEEL_CIRCUMFERENCE, inchesToCm(distance)));
+        leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPer40, FRONT_WHEEL_CIRCUMFERENCE, inchesToCm(distance)));
+        leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() + (int) findTotalTicks(ticksPer40, BACK_WHEEL_CIRCUMFERENCE, inchesToCm(distance)));
+        rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPer40, FRONT_WHEEL_CIRCUMFERENCE, inchesToCm(distance)));
+        rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition() + (int) findTotalTicks(ticksPer40, BACK_WHEEL_CIRCUMFERENCE, inchesToCm(distance)));
 
         //then after setting position, you ALSO set power AND set mode to run to position
         for (DcMotor motor : motors) {
@@ -100,6 +100,7 @@ public class ParkingOverLineModified extends LinearOpMode {
                 telemetry.addData("motor currPos -> targetPos", "%d -> %d", motor.getCurrentPosition(), motor.getTargetPosition());
                 telemetry.addData("mode & isBusy?", "%s & %s", motor.getMode(), motor.isBusy() ? "yes" : "no");
             }
+            if (Math.abs(rightFrontDrive.getCurrentPosition()) > Math.abs(rightFrontDrive.getTargetPosition())) break;
             telemetry.update();
             idle();
         }
