@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Tank Drive Time Based", group = "Linear Opmode")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Color Sensor Tester", group = "Linear Opmode")
 public class ColorSensorTester extends LinearOpMode {
 
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
@@ -43,26 +43,32 @@ public class ColorSensorTester extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            drive(TILE_LENGTH);
+            telemetry.addLine(((Integer)color_sensor.alpha()).toString());
+            telemetry.addLine(((Integer)color_sensor.argb()).toString());
+            telemetry.update();
 
-            for (int i = 6; i > 3; i--) {
-                if (color_sensor.alpha() <= 0.2) {
+            sleep(1000);
 
-                    driveWithSkystone(i);
+//            drive(TILE_LENGTH);
+//
+//            for (int i = 6; i > 3; i--) {
+//                if (color_sensor.alpha() <= 0.2) {
+//
+//                    driveWithSkystone(i);
+//
+//                    //drive to the next SkyStone
+//                    drive(8 * (9 - i) + 2.5 * TILE_LENGTH);
+//                    driveWithSkystone(i-3);
+//                    drive(2.5* TILE_LENGTH);
+//
+//                }
+//                else {
+//                    turn(90, -1*ALLIANCE);//left turn if on right side, vice versa
+//                    drive(8);
+//                    //turn(90, 1*ALLIANCE);//take out this line to enter PARTY MODE
+//                }
 
-                    //drive to the next SkyStone
-                    drive(8 * (9 - i) + 2.5 * TILE_LENGTH);
-                    driveWithSkystone(i-3);
-                    drive(2.5* TILE_LENGTH);
-
-                }
-                else {
-                    turn(90, -1*ALLIANCE);//left turn if on right side, vice versa
-                    drive(8);
-                    turn(90, 1*ALLIANCE);//take out this line to enter PARTY MODE
-                }
-
-            }
+            //}
 
         }
     }
@@ -80,7 +86,7 @@ public class ColorSensorTester extends LinearOpMode {
             else motor.setPower(1);
         }
 
-        double tps = 1.8;//tiles per second -- need to test
+        double tps = 1.8;//tiles per second
 
         //ex: 6 total tiles /
         //3 tiles per second =

@@ -199,11 +199,11 @@ public class TankDriveTeleOp extends OpMode {
              leftFrontFlywheel.setPower(0);
             rightFrontFlywheel.setPower(0);
         }else if (runFlywheelsForward) {
-            leftFrontFlywheel.setPower(1);
-            rightFrontFlywheel.setPower(-1);
+            leftFrontFlywheel.setPower(0.5);
+            rightFrontFlywheel.setPower(-0.5);
         }else {
-            leftFrontFlywheel.setPower(-1);
-            rightFrontFlywheel.setPower(1);
+            leftFrontFlywheel.setPower(-0.5);
+            rightFrontFlywheel.setPower(0.5);
         }
 
         //when 'b' button is pressed and back flywheels are not running, set bool to true
