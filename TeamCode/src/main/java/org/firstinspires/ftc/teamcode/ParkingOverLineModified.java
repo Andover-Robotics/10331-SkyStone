@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 //but we need it in run_to_position mode such that it stops.this means we need to calculate the number of ticks
 //correctly for both the 40 and 60 motors.
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Parking Over Line With Stopping", group = "Linear Opmode")
+//@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Parking Over Line With Stopping", group = "Linear Opmode")
 
 public class ParkingOverLineModified extends LinearOpMode {
 

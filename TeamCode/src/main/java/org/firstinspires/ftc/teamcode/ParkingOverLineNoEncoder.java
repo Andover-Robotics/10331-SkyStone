@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 //A simple OpMode that parks over the line without the use of an encoder where the back wheels are positioned 2 tiles away.
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Parking Over Line No encoder", group = "Linear Opmode")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Parking Over Line", group = "Linear Opmode")
 
 public class ParkingOverLineNoEncoder extends LinearOpMode {
 

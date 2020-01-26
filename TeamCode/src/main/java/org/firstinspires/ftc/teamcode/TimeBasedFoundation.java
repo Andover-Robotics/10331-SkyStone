@@ -4,11 +4,10 @@ import com.andoverrobotics.core.drivetrain.MecanumDrive;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Tank Drive Time Based", group = "Linear Opmode")
-public class TimeBasedAuto extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Foundation Auto", group = "Linear Opmode")
+public class TimeBasedFoundation extends LinearOpMode {
 
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
@@ -43,26 +42,7 @@ public class TimeBasedAuto extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-         drive(TILE_LENGTH);
-
-         for (int i = 6; i > 3; i--) {
-                if (color_sensor.alpha() < 1100) {
-
-                    driveWithSkystone(i);
-
-                    //drive to the next SkyStone
-                    drive(8 * (9 - i) + 2.5 * TILE_LENGTH);
-                    driveWithSkystone(i-3);
-                    drive(2.5* TILE_LENGTH);
-
-                }
-                else {
-                    turn(90, -1*ALLIANCE);//left turn if on right side, vice versa
-                    drive(8);
-                    turn(90, 1*ALLIANCE);//take out this line to enter PARTY MODE
-                }
-
-            }
+            
 
         }
     }

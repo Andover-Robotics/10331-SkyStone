@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 //UPDATE: we edited this because we managed to get the other motor! However, this should still be the
 //more accurate version of the encoder code. (It doesn't stop, though!)
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Parking Over Line Loop Fix", group = "Linear Opmode")
+//@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Parking Over Line Loop Fix", group = "Linear Opmode")
 
 public class ParkingOverLineModifiedLoopFix extends LinearOpMode {
 

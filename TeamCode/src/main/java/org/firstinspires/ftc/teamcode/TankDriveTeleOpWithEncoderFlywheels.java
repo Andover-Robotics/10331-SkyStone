@@ -50,7 +50,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Tank Drive TeleOp With Encoded Flywheels", group = "Iterative Opmode")
+//@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Tank Drive TeleOp With Encoded Flywheels", group = "Iterative Opmode")
 //@Disabled
 public class TankDriveTeleOpWithEncoderFlywheels extends OpMode {
     // Declare OpMode members.
