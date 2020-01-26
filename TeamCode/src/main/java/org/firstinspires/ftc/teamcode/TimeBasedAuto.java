@@ -149,12 +149,10 @@ public class TimeBasedAuto extends LinearOpMode {
         drive(8);
 
         //turn 90 degrees counterclockwise to pickup  SkyStone (clockwise if on left side)
-        //TODO: change this to actual turning
         //driveTrain.rotateCounterClockwise(90);
         turn(90, 1*ALLIANCE);//is this actually necessary?
 
         //turn & move to knock out next block to line up with SkyStone
-        //TODO: change this to actual turning and moving
         //driveTrain.strafeInches(4, 0);
         turn(90, -1*ALLIANCE);//is this necessary (it is if the top one is there, but that doesn't look like an option)
         drive(4);
@@ -166,7 +164,6 @@ public class TimeBasedAuto extends LinearOpMode {
         flywheelIntake();
 
         //move out of the line of stones
-        //TODO: change this to actual turning and moving
         //driveTrain.strafeInches(-8, 0);
         turn(90, 1*ALLIANCE);
         drive(8);

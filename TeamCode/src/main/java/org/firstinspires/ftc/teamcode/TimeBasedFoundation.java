@@ -4,6 +4,7 @@ import com.andoverrobotics.core.drivetrain.MecanumDrive;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Foundation Auto", group = "Linear Opmode")
@@ -37,17 +38,30 @@ public class TimeBasedFoundation extends LinearOpMode {
         leftBackFlywheel = hardwareMap.get(DcMotor.class, "leftBackFlywheel");
         rightFrontFlywheel = hardwareMap.get(DcMotor.class, "rightFrontFlywheel");
         rightBackFlywheel = hardwareMap.get(DcMotor.class, "rightBackFlywheel");
+        Servo foundationMover = hardwareMap.get(Servo.class, "foundationMoverServo");
 
         waitForStart();
 
         while (opModeIsActive()) {
 
-            
+            drive(TILE_LENGTH, 1);
+            foundationMover.setPosition(0.0);//how to ensure position is 0 @ start?
+            sleep(2000);
+            foundationMover.setPosition(0.5);
+            sleep(2000);
+            drive(TILE_LENGTH, -1);
+            foundationMover.setPosition(0.0);
+            sleep(2000);
+            turn(90, 1);
+            drive(1.5*TILE_LENGTH, 1);
 
+            break;
         }
     }
 
-    public void drive(double distance) throws InterruptedException {
+    public void drive(double distance, int direction) throws InterruptedException {
+
+        //DIRECTION: 1 = forwards, -1 = backwards
 
         double num_tiles = distance/TILE_LENGTH;
 
@@ -56,8 +70,8 @@ public class TimeBasedFoundation extends LinearOpMode {
 
         for (int i = 0; i < motors.length; i++) {
             DcMotor motor = motors[i];
-            if (i < 2) motor.setPower(-1);
-            else motor.setPower(1);
+            if (i < 2) motor.setPower(-1*direction);
+            else motor.setPower(1*direction);
         }
 
         double tps = 1.8;//tiles per second -- need to test
@@ -126,7 +140,7 @@ public class TimeBasedFoundation extends LinearOpMode {
     public void driveWithSkystone(int i) throws InterruptedException {
         //strafes to right of the SkyStone in middle of next block
         turn(90, 1*ALLIANCE);
-        drive(8);
+        drive(8, 1);
 
         //turn 90 degrees counterclockwise to pickup  SkyStone (clockwise if on left side)
         //TODO: change this to actual turning
@@ -137,11 +151,11 @@ public class TimeBasedFoundation extends LinearOpMode {
         //TODO: change this to actual turning and moving
         //driveTrain.strafeInches(4, 0);
         turn(90, -1*ALLIANCE);//is this necessary (it is if the top one is there, but that doesn't look like an option)
-        drive(4);
+        drive(4,1);
         turn(90, 1*ALLIANCE);
 
         //drive forwards to be close to the SkyStone for intake
-        drive(2);
+        drive(2, 1);
 
         flywheelIntake();
 
@@ -149,11 +163,11 @@ public class TimeBasedFoundation extends LinearOpMode {
         //TODO: change this to actual turning and moving
         //driveTrain.strafeInches(-8, 0);
         turn(90, 1*ALLIANCE);
-        drive(8);
+        drive(8, 1);
         turn(90, -1*ALLIANCE);
 
         //drive backwards to other side of field
-        drive(-8 * (6 - i) + 2.5 * TILE_LENGTH);
+        drive(-8 * (6 - i) + 2.5 * TILE_LENGTH, 1);
 
         flywheelOuttake();
     }
@@ -164,7 +178,7 @@ public class TimeBasedFoundation extends LinearOpMode {
     public void flywheelIntake() throws InterruptedException {
         leftFrontFlywheel.setPower(1);
         rightFrontFlywheel.setPower(1);
-        drive(3);
+        drive(3, 1);
         leftFrontFlywheel.setPower(0);
         rightFrontFlywheel.setPower(0);
         //leftFrontFlywheel.setTargetPosition(leftFrontFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
@@ -174,7 +188,7 @@ public class TimeBasedFoundation extends LinearOpMode {
     public void flywheelOuttake() throws InterruptedException {
         leftFrontFlywheel.setPower(-1);
         rightFrontFlywheel.setPower(-1);
-        drive(3);
+        drive(3, 1);
         leftFrontFlywheel.setPower(0);
         rightFrontFlywheel.setPower(0);
         //leftBackFlywheel.setTargetPosition(leftBackFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
