@@ -1,26 +1,30 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.andoverrobotics.core.drivetrain.MecanumDrive;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "SkyStone Sensing Auto", group = "Linear Opmode")
-public class TimeBasedAuto extends LinearOpMode {
+//A simple OpMode that parks over the line without the use of an encoder where the back wheels are positioned 2 tiles away.
+//(Waits 25 seconds and parks on side closer to the neutral bridge)
+
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Wait & Park (opposite side)", group = "Linear Opmode")
+
+public class ParkingOverLineOppositeSideWithWait extends LinearOpMode {
 
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
     private static DcMotor leftFrontFlywheel, leftBackFlywheel, rightFrontFlywheel, rightBackFlywheel;
-    private static MecanumDrive driveTrain;
+    //private static MecanumDrive driveTrain;
     private static final double mecanumCircumference = 32, flywheelCircumference = 16;
-    private static final int ticksPerMecanum = 1120, ticksPerFlywheel = 538;
+    private static final int ticksPer40 = 1120, ticksPer60 = 1680;
     //public enum SkyStoneStatus {NO_STONE, STONE, SKYSTONE}
     ElapsedTime runtime = new ElapsedTime();
 
-    private final static double TILE_LENGTH = 24, FIELD_LENGTH = 6*TILE_LENGTH;
-    private final static int ALLIANCE = 1;//1 means on right side of field, -1 means left
+    private final static double TILE_LENGTH = (24), FIELD_LENGTH = 6*TILE_LENGTH;
+    private final static int FIELD_SIDE = 1;//1 means left side of line, -1 means right side
+    private final static double BACK_WHEEL_CIRCUMFERENCE = inchesToCm(4*Math.PI);
+    private final static double FRONT_WHEEL_CIRCUMFERENCE = inchesToCm(3*Math.PI);
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -28,8 +32,7 @@ public class TimeBasedAuto extends LinearOpMode {
         runtime.reset();
 
         telemetry.addLine("This started");
-        ColorSensor color_sensor;
-        color_sensor = hardwareMap.get(ColorSensor.class, "color_sensor");
+        ColorSensor color_sensor = hardwareMap.get(ColorSensor.class, "color_sensor");
         leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontDrive");
         leftBackDrive = hardwareMap.get(DcMotor.class, "leftBackDrive");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontDrive");
@@ -39,33 +42,25 @@ public class TimeBasedAuto extends LinearOpMode {
         rightFrontFlywheel = hardwareMap.get(DcMotor.class, "rightFrontFlywheel");
         rightBackFlywheel = hardwareMap.get(DcMotor.class, "rightBackFlywheel");
 
+        //driveTrain = MecanumDrive.fromCrossedMotors(leftFrontDrive, rightFrontDrive, leftBackDrive, rightBackDrive, this, 89, 1120);
+        //driveTrain.setDefaultDrivePower(1);
+
         waitForStart();
 
         while (opModeIsActive()) {
 
-         drive(TILE_LENGTH, 1);
+            sleep(25000);
 
-         for (int i = 6; i > 3; i--) {
-                if (color_sensor.alpha() < 1100) {
+            drive(TILE_LENGTH*1.25, 1);
+            turn(90, FIELD_SIDE);
+            drive(TILE_LENGTH, 1);
 
-                    driveWithSkystone(i);
-
-                    //drive to the next SkyStone
-                    drive(8 * (9 - i) + 2.5 * TILE_LENGTH, 1);
-                    driveWithSkystone(i-3);
-                    drive(2.5* TILE_LENGTH, 1);
-
-                }
-                else {
-                    turn(90, -1*ALLIANCE);//left turn if on right side, vice versa
-                    drive(8, 1);
-                    turn(90, 1*ALLIANCE);//take out this line to enter PARTY MODE
-                }
-
-            }
+            break;
 
         }
+
     }
+
 
     public void drive(double distance, int direction) throws InterruptedException {
 
@@ -124,8 +119,6 @@ public class TimeBasedAuto extends LinearOpMode {
 
     }
 
-
-
     public static double findTotalTicks(int ticksPerRev, double circumference, double intendedDist) {
 
 
@@ -145,59 +138,10 @@ public class TimeBasedAuto extends LinearOpMode {
         return finalTicks;
     }
 
-    public void driveWithSkystone(int i) throws InterruptedException {
-        //strafes to right of the SkyStone in middle of next block
-        turn(90, 1*ALLIANCE);
-        drive(8, 1);
-
-        //turn 90 degrees counterclockwise to pickup  SkyStone (clockwise if on left side)
-        //driveTrain.rotateCounterClockwise(90);
-        turn(90, 1*ALLIANCE);//is this actually necessary?
-
-        //turn & move to knock out next block to line up with SkyStone
-        //driveTrain.strafeInches(4, 0);
-        turn(90, -1*ALLIANCE);//is this necessary (it is if the top one is there, but that doesn't look like an option)
-        drive(4, 1);
-        turn(90, 1*ALLIANCE);
-
-        //drive forwards to be close to the SkyStone for intake
-        drive(2, 1);
-
-        flywheelIntake();
-
-        //move out of the line of stones
-        //driveTrain.strafeInches(-8, 0);
-        turn(90, 1*ALLIANCE);
-        drive(8, 1);
-        turn(90, -1*ALLIANCE);
-
-        //drive backwards to other side of field
-        drive(-8 * (6 - i) + 2.5 * TILE_LENGTH, 1);
-
-        flywheelOuttake();
-    }
 
     private static double inchesToCm(double inches) {
         return inches*2.54;
     }
-    public void flywheelIntake() throws InterruptedException {
-        leftFrontFlywheel.setPower(1);
-        rightFrontFlywheel.setPower(1);
-        drive(3, 1);
-        leftFrontFlywheel.setPower(0);
-        rightFrontFlywheel.setPower(0);
-        //leftFrontFlywheel.setTargetPosition(leftFrontFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
-        //rightFrontFlywheel.setTargetPosition(rightFrontFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
 
-    }
-    public void flywheelOuttake() throws InterruptedException {
-        leftFrontFlywheel.setPower(-1);
-        rightFrontFlywheel.setPower(-1);
-        drive(3, 1);
-        leftFrontFlywheel.setPower(0);
-        rightFrontFlywheel.setPower(0);
-        //leftBackFlywheel.setTargetPosition(leftBackFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
-        //rightBackFlywheel.setTargetPosition(rightBackFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
-    }
 }
 

@@ -3,14 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 //A simple OpMode that parks over the line without the use of an encoder where the back wheels are positioned 2 tiles away.
+//(Waits 25 seconds for another team to finish auto before parking)
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Basic Park", group = "Linear Opmode")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Wait & Park", group = "Linear Opmode")
 
-public class ParkingOverLineNoEncoder extends LinearOpMode {
+public class ParkingOverLineWithWait extends LinearOpMode {
 
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
@@ -49,6 +49,7 @@ public class ParkingOverLineNoEncoder extends LinearOpMode {
 
         while (opModeIsActive()) {
 
+            sleep(25000);
             drive(TILE_LENGTH, 1);
 
             break;
