@@ -222,23 +222,23 @@ public class TankDriveTeleOpWithServo extends OpMode {
             }
         }*/
 
-        if (gamepad1.a) {
+        if (gamepad2.dpad_down) {
             runServosForward = true;
             runServosBackward = false;
-        }else if (gamepad1.b) {
+        }else if (gamepad2.dpad_up) {
             runServosBackward = true;
             runServosForward = false;
-        }else if (gamepad1.x) {
+        }else if (gamepad2.dpad_right) {
             runServosForward = false;
             runServosBackward = false;
         }
 
         if (!runServosBackward && !runServosForward) {
-            servo.setDirection(Servo.Direction.FORWARD);
+            //do nothing??
         }else if (runServosForward) {
-            servo.setDirection(Servo.Direction.REVERSE);
+            servo.setPosition(0.5);
         }else {
-            //How do you stop it from moving? Will do more research
+            servo.setPosition(0.0);
         }
 
 
