@@ -101,7 +101,7 @@ public class ParkingOverLineOppositeSide extends LinearOpMode {
             motor.setPower(direction*0.5);
         }
 
-        int dps = 100;//degrees per second
+        double dps = 100*113/90;//degrees per second
 
         //ex: 60 total degrees /
         //30 degrees per second =

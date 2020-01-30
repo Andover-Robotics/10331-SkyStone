@@ -100,7 +100,7 @@ public class TimeBasedFoundation extends LinearOpMode {
             motor.setPower(direction*0.5);
         }
 
-        int dps = 100;//degrees per second
+        double dps = 100*113/90;//degrees per second
 
         //ex: 60 total degrees /
         //30 degrees per second =
@@ -115,7 +115,6 @@ public class TimeBasedFoundation extends LinearOpMode {
         }
 
     }
-
 
 
     public static double findTotalTicks(int ticksPerRev, double circumference, double intendedDist) {

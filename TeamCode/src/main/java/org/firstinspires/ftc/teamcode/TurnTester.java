@@ -6,11 +6,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 //A simple OpMode that parks over the line without the use of an encoder where the back wheels are positioned 2 tiles away.
-//(Waits 25 seconds and parks on side closer to the neutral bridge)
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Wait & Park (opposite side)", group = "Linear Opmode")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Turn Test", group = "Linear Opmode")
 
-public class ParkingOverLineOppositeSideWithWait extends LinearOpMode {
+public class TurnTester extends LinearOpMode {
 
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
@@ -22,7 +21,7 @@ public class ParkingOverLineOppositeSideWithWait extends LinearOpMode {
     ElapsedTime runtime = new ElapsedTime();
 
     private final static double TILE_LENGTH = (24), FIELD_LENGTH = 6*TILE_LENGTH;
-    private final static int FIELD_SIDE = 1;//1 means left side of line, -1 means right side
+    private final static int ALLIANCE = 1;//1 means on right side of field, -1 means left
     private final static double BACK_WHEEL_CIRCUMFERENCE = inchesToCm(4*Math.PI);
     private final static double FRONT_WHEEL_CIRCUMFERENCE = inchesToCm(3*Math.PI);
 
@@ -49,11 +48,11 @@ public class ParkingOverLineOppositeSideWithWait extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            sleep(25000);
+            for (int i = 0; i < 4; i++) {
+                turn(90, 1);
+                sleep(2000);
+            }
 
-            drive(TILE_LENGTH*1.25, 1);
-            turn(90, FIELD_SIDE);
-            drive(TILE_LENGTH, 1);
 
             break;
 
@@ -61,6 +60,32 @@ public class ParkingOverLineOppositeSideWithWait extends LinearOpMode {
 
     }
 
+
+    public void turn (double degrees, int direction) throws InterruptedException {
+        //direction = 1 to turn ccw, -1 to turn cw
+
+        //creates array of motors and loops through for efficiency
+        DcMotor[] motors = {leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive};
+
+        for (DcMotor motor : motors) {
+            motor.setPower(direction*0.5);
+        }
+
+        double dps = 100*113/90;//degrees per second
+
+        //ex: 60 total degrees /
+        //30 degrees per second =
+        //2 total seconds
+
+        double seconds = degrees/dps;
+        double millis = seconds*1000;
+        Thread.sleep((long)millis);
+
+        for (DcMotor motor : motors) {
+            motor.setPower(0);
+        }
+
+    }
 
     public void drive(double distance, int direction) throws InterruptedException {
 
@@ -84,32 +109,6 @@ public class ParkingOverLineOppositeSideWithWait extends LinearOpMode {
         //2 total seconds
 
         double seconds = num_tiles/tps;
-        double millis = seconds*1000;
-        Thread.sleep((long)millis);
-
-        for (DcMotor motor : motors) {
-            motor.setPower(0);
-        }
-
-    }
-
-    public void turn (double degrees, int direction) throws InterruptedException {
-        //direction = 1 to turn ccw, -1 to turn cw
-
-        //creates array of motors and loops through for efficiency
-        DcMotor[] motors = {leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive};
-
-        for (DcMotor motor : motors) {
-            motor.setPower(direction*0.5);
-        }
-
-        double dps = 100*113/90;//degrees per second
-
-        //ex: 60 total degrees /
-        //30 degrees per second =
-        //2 total seconds
-
-        double seconds = degrees/dps;
         double millis = seconds*1000;
         Thread.sleep((long)millis);
 

@@ -20,7 +20,7 @@ public class TimeBasedAuto extends LinearOpMode {
     ElapsedTime runtime = new ElapsedTime();
 
     private final static double TILE_LENGTH = 24, FIELD_LENGTH = 6*TILE_LENGTH;
-    private final static int ALLIANCE = 1;//1 means on right side of field, -1 means left
+    private final static int ALLIANCE = -1;//1 means on right side of field, -1 means left
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -43,9 +43,11 @@ public class TimeBasedAuto extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-         drive(TILE_LENGTH, 1);
+            drive(TILE_LENGTH*1.5, 1);
 
-         for (int i = 6; i > 3; i--) {
+            for (int i = 6; i > 3; i--) {
+                telemetry.addLine(((Integer)(color_sensor.alpha())).toString());
+                telemetry.update();
                 if (color_sensor.alpha() < 1100) {
 
                     driveWithSkystone(i);
@@ -54,7 +56,7 @@ public class TimeBasedAuto extends LinearOpMode {
                     drive(8 * (9 - i) + 2.5 * TILE_LENGTH, 1);
                     driveWithSkystone(i-3);
                     drive(2.5* TILE_LENGTH, 1);
-
+                    break;
                 }
                 else {
                     turn(90, -1*ALLIANCE);//left turn if on right side, vice versa
@@ -63,6 +65,8 @@ public class TimeBasedAuto extends LinearOpMode {
                 }
 
             }
+            
+            break;
 
         }
     }
@@ -108,7 +112,7 @@ public class TimeBasedAuto extends LinearOpMode {
             motor.setPower(direction*0.5);
         }
 
-        int dps = 100;//degrees per second
+        double dps = 100*113/90;//degrees per second
 
         //ex: 60 total degrees /
         //30 degrees per second =
@@ -123,7 +127,6 @@ public class TimeBasedAuto extends LinearOpMode {
         }
 
     }
-
 
 
     public static double findTotalTicks(int ticksPerRev, double circumference, double intendedDist) {
@@ -152,11 +155,11 @@ public class TimeBasedAuto extends LinearOpMode {
 
         //turn 90 degrees counterclockwise to pickup  SkyStone (clockwise if on left side)
         //driveTrain.rotateCounterClockwise(90);
-        turn(90, 1*ALLIANCE);//is this actually necessary?
+        turn(90, -1*ALLIANCE);//is this actually necessary?
 
         //turn & move to knock out next block to line up with SkyStone
         //driveTrain.strafeInches(4, 0);
-        turn(90, -1*ALLIANCE);//is this necessary (it is if the top one is there, but that doesn't look like an option)
+        //turn(90, -1*ALLIANCE);//is this necessary (it is if the top one is there, but that doesn't look like an option)
         drive(4, 1);
         turn(90, 1*ALLIANCE);
 
@@ -167,11 +170,12 @@ public class TimeBasedAuto extends LinearOpMode {
 
         //move out of the line of stones
         //driveTrain.strafeInches(-8, 0);
-        turn(90, 1*ALLIANCE);
-        drive(8, 1);
         turn(90, -1*ALLIANCE);
+        drive(8, -1);
+        turn(90, 1*ALLIANCE);
 
         //drive backwards to other side of field
+        //you lost the game ^>^
         drive(-8 * (6 - i) + 2.5 * TILE_LENGTH, 1);
 
         flywheelOuttake();
