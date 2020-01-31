@@ -4,11 +4,10 @@ import com.andoverrobotics.core.drivetrain.MecanumDrive;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "SkyStone Sensing Auto", group = "Linear Opmode")
-public class TimeBasedAuto extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "New Color Sensor Tester", group = "Linear Opmode")
+public class ColorSensorTesterII extends LinearOpMode {
 
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
@@ -28,7 +27,6 @@ public class TimeBasedAuto extends LinearOpMode {
         runtime.reset();
 
         telemetry.addLine("This started");
-        telemetry.update();
         ColorSensor color_sensor;
         color_sensor = hardwareMap.get(ColorSensor.class, "color_sensor");
         leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontDrive");
@@ -44,61 +42,40 @@ public class TimeBasedAuto extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            drive(30, 1, 1);
-            sleep(1000);
-
-            for (int i = 6; i > 3; i--) {
-                telemetry.addLine(((Integer)(color_sensor.alpha())).toString());
+            for (int i = 1; i < 6; i++) {
+                drive(2, 1);
+                telemetry.addLine(((Integer)color_sensor.alpha()).toString());
+                telemetry.addLine(((Integer)color_sensor.argb()).toString());
                 telemetry.update();
-                sleep(100);
-                if (color_sensor.alpha() < 750) {
-                    telemetry.addLine("sensed skystone");
-                    telemetry.update();
-                    sleep(2000);
-
-                    driveWithSkystone(i);
-                    telemetry.addLine("driven with skystone");
-                    telemetry.update();
-                    sleep(100);
-
-                    //drive to the next SkyStone
-                    drive(8 * (9 - i) + 2.5 * TILE_LENGTH, 1, 1);
-                    telemetry.addLine("driven to next skystone");
-                    telemetry.update();
-                    sleep(100);
-
-
-                    driveWithSkystone(i-3);
-                    telemetry.addLine("driven w/ next skystone");
-                    telemetry.update();
-                    sleep(100);
-
-                    drive(2.5* TILE_LENGTH, 1, 1);
-                    telemetry.addLine("Done!");
-                    telemetry.update();
-                    sleep(100);
-
-                    break;
-                }
-                else {
-                    telemetry.addLine("Still looking for SS");
-                    telemetry.update();
-                    sleep(100);
-                    drive(4, -1, 1);
-                    turn(90, -1*ALLIANCE);//left turn if on right side, vice versa
-                    drive(8, 1, 1);
-                    turn(90, 1*ALLIANCE);//take out this line to enter PARTY MODE
-                    drive(4, 1, 1);
-                }
-
+                sleep(1000);
             }
 
-            break;
+
+//            drive(TILE_LENGTH);
+//
+//            for (int i = 6; i > 3; i--) {
+//                if (color_sensor.alpha() <= 0.2) {
+//
+//                    driveWithSkystone(i);
+//
+//                    //drive to the next SkyStone
+//                    drive(8 * (9 - i) + 2.5 * TILE_LENGTH);
+//                    driveWithSkystone(i-3);
+//                    drive(2.5* TILE_LENGTH);
+//
+//                }
+//                else {
+//                    turn(90, -1*ALLIANCE);//left turn if on right side, vice versa
+//                    drive(8);
+//                    //turn(90, 1*ALLIANCE);//take out this line to enter PARTY MODE
+//                }
+
+            //}
 
         }
     }
 
-    public void drive(double distance, int direction, double speed) throws InterruptedException {
+    public void drive(double distance, int direction) throws InterruptedException {
 
         //DIRECTION: 1 = forwards, -1 = backwards
 
@@ -109,8 +86,8 @@ public class TimeBasedAuto extends LinearOpMode {
 
         for (int i = 0; i < motors.length; i++) {
             DcMotor motor = motors[i];
-            if (i < 2) motor.setPower(-1*direction*speed);
-            else motor.setPower(1*direction*speed);
+            if (i < 2) motor.setPower(-1*direction);
+            else motor.setPower(1*direction);
         }
 
         double tps = 1.8;//tiles per second -- need to test
@@ -136,10 +113,10 @@ public class TimeBasedAuto extends LinearOpMode {
         DcMotor[] motors = {leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive};
 
         for (DcMotor motor : motors) {
-            motor.setPower(direction*-0.5);
+            motor.setPower(direction*0.5);
         }
 
-        double dps = 97*113/90;//degrees per second
+        int dps = 100;//degrees per second
 
         //ex: 60 total degrees /
         //30 degrees per second =
@@ -154,6 +131,7 @@ public class TimeBasedAuto extends LinearOpMode {
         }
 
     }
+
 
 
     public static double findTotalTicks(int ticksPerRev, double circumference, double intendedDist) {
@@ -175,68 +153,48 @@ public class TimeBasedAuto extends LinearOpMode {
         return finalTicks;
     }
 
-    public void driveWithSkystone(int i) throws InterruptedException {
-
-        int left = 1;
-        int right = -1;
-
+    /*public void driveWithSkystone(int i) throws InterruptedException {
         //strafes to right of the SkyStone in middle of next block
-//        turn(90, right*ALLIANCE);//1: switched dir
-//        drive(13, 1);
-//
-//        //turn 90 degrees counterclockwise to pickup  SkyStone (clockwise if on left side)
-//        //driveTrain.rotateCounterClockwise(90);
-//        turn(90, left*ALLIANCE);//is this actually necessary?
-//        sleep(1000);
-//
-//        //turn & move to knock out next block to line up with SkyStone
-//        //driveTrain.strafeInches(4, 0);
-//        //turn(90, -1*ALLIANCE);//is this necessary (it is if the top one is there, but that doesn't look like an option)
-//        drive(10, 1);
-//        sleep(1000);
-//        turn(90, left*ALLIANCE);
-//        sleep(1000);
+        turn(90, 1);
+        drive(8);
+
+        //turn 90 degrees counterclockwise to pickup  SkyStone (clockwise if on left side)
+        //TODO: change this to actual turning
+        //driveTrain.rotateCounterClockwise(90);
+        turn(90, 1*ALLIANCE);//is this actually necessary?
+
+        //turn & move to knock out next block to line up with SkyStone
+        //TODO: change this to actual turning and moving
+        //driveTrain.strafeInches(4, 0);
+        turn(90, -1*ALLIANCE);//is this necessary (it is if the top one is there, but that doesn't look like an option)
+        drive(4);
+        turn(90, 1*ALLIANCE);
 
         //drive forwards to be close to the SkyStone for intake
-//        drive(2, 1);
-//        sleep(1000);
+        drive(2);
 
-//        drive(24, -1, 1);
-//        drive(24, 1, 1);
         flywheelIntake();
 
         //move out of the line of stones
+        //TODO: change this to actual turning and moving
         //driveTrain.strafeInches(-8, 0);
-        drive(37, -1, 1);
         turn(90, 1*ALLIANCE);
+        drive(8);
+        turn(90, -1*ALLIANCE);
 
         //drive backwards to other side of field
-        //you lost the game ^>^
-        drive(-8 * (6 - i) + 2.5 * TILE_LENGTH, 1, 1);
+        drive(-8 * (6 - i) + 2.5 * TILE_LENGTH);
 
         flywheelOuttake();
     }
-
+*/
     private static double inchesToCm(double inches) {
         return inches*2.54;
     }
     public void flywheelIntake() throws InterruptedException {
-        leftFrontFlywheel.setPower(-1);
+        leftFrontFlywheel.setPower(1);
         rightFrontFlywheel.setPower(1);
-        DcMotor[] motors = {leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive};
-
-        for (int i = 0; i < motors.length; i++) {
-            DcMotor motor = motors[i];
-            if (i < 2) motor.setPower(-0.5);
-            else motor.setPower(0.5);
-        }
-
-        sleep(1500);
-
-        for (DcMotor motor : motors) {
-            motor.setPower(0);
-        }
-
+        //drive(3);
         leftFrontFlywheel.setPower(0);
         rightFrontFlywheel.setPower(0);
         //leftFrontFlywheel.setTargetPosition(leftFrontFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
@@ -246,7 +204,7 @@ public class TimeBasedAuto extends LinearOpMode {
     public void flywheelOuttake() throws InterruptedException {
         leftFrontFlywheel.setPower(-1);
         rightFrontFlywheel.setPower(-1);
-        drive(3, 1, 0.5);
+        //drive(3);
         leftFrontFlywheel.setPower(0);
         rightFrontFlywheel.setPower(0);
         //leftBackFlywheel.setTargetPosition(leftBackFlywheel.getCurrentPosition()+(int)findTotalTicks(ticksPerFlywheel,flywheelCircumference, 2*flywheelCircumference));
