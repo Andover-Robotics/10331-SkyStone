@@ -4,11 +4,10 @@ import com.andoverrobotics.core.drivetrain.MecanumDrive;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "BLUE - SkyStone Sensing Auto", group = "Linear Opmode")
-public class TimeBasedAuto extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "RED - SkyStone Sensing Auto", group = "Linear Opmode")
+public class TimeBasedAutoRed extends LinearOpMode {
 
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
@@ -20,7 +19,7 @@ public class TimeBasedAuto extends LinearOpMode {
     ElapsedTime runtime = new ElapsedTime();
 
     private final static double TILE_LENGTH = 24, FIELD_LENGTH = 6*TILE_LENGTH;
-    private final static int ALLIANCE = -1;//1 means on right side of field, -1 means left
+    private final static int ALLIANCE = 1;//1 means on right side of field, -1 means left
 
     @Override
     public void runOpMode() throws InterruptedException {

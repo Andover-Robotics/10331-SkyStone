@@ -4,11 +4,10 @@ import com.andoverrobotics.core.drivetrain.MecanumDrive;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "BLUE - SkyStone Sensing Auto", group = "Linear Opmode")
-public class TimeBasedAuto extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "TEST BLUE - SkyStone Sensing Auto", group = "Linear Opmode")
+public class TimeBasedAutoBlueII extends LinearOpMode {
 
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
@@ -87,8 +86,8 @@ public class TimeBasedAuto extends LinearOpMode {
                     drive(4, -1, 1);
                     turn(90, -1*ALLIANCE);//left turn if on right side, vice versa
                     drive(8, 1, 1);
-                    turn(90, 1*ALLIANCE);//take out this line to enter PARTY MODE
-                    drive(4, 1, 1);
+                    turn(75, 1*ALLIANCE);//take out this line to enter PARTY MODE
+                    drive(3, 1, 1);
                 }
 
             }
@@ -216,7 +215,7 @@ public class TimeBasedAuto extends LinearOpMode {
 
         flywheelOuttake();
 
-        drive(TILE_LENGTH, 1, -1);
+        drive((TILE_LENGTH*0.75) - 8, 1, -1);
     }
 
     private static double inchesToCm(double inches) {
