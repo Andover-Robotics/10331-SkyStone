@@ -4,11 +4,10 @@ import com.andoverrobotics.core.drivetrain.MecanumDrive;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "BLUE - SkyStone Sensing Auto", group = "Linear Opmode")
-public class TimeBasedAuto extends LinearOpMode {
+public class SensorRelocationAuto extends LinearOpMode {
 
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
@@ -21,7 +20,7 @@ public class TimeBasedAuto extends LinearOpMode {
 
     private final static double TILE_LENGTH = 24, FIELD_LENGTH = 6*TILE_LENGTH;
     private final static int ALLIANCE = -1;//1 means on right side of field, -1 means left
-
+   /// instead turning between every stone -> it goes forward then pause then sense
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -46,9 +45,10 @@ public class TimeBasedAuto extends LinearOpMode {
 
             drive(30, 1, 1);
             sleep(1000);
+            turn(90,1*ALLIANCE );
 
-            for (int i = 6; i > 3; i--) {
-                telemetry.addLine(((Integer)(color_sensor.alpha())).toString());
+                for (int i = 6; i > 3; i--) {
+                    telemetry.addLine(((Integer)(color_sensor.alpha())).toString());
                 telemetry.update();
                 sleep(100);
                 if (color_sensor.alpha() < 750) {
@@ -85,10 +85,11 @@ public class TimeBasedAuto extends LinearOpMode {
                     telemetry.update();
                     sleep(100);
                     drive(4, -1, 1);
-                    turn(90, -1*ALLIANCE);//left turn if on right side, vice versa
+                    sleep(100);
+                    /*turn(90, -1*ALLIANCE);//left turn if on right side, vice versa
                     drive(8, 1, 1);
                     turn(90, 1*ALLIANCE);//take out this line to enter PARTY MODE
-                    drive(2, 1, 0.5);
+                    drive(2, 1, 0.5);*/
                 }
 
             }
