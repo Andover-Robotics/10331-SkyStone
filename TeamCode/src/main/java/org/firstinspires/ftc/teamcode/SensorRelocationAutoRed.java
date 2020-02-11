@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "THIS IS ACTUALLY THE ACTUAL AUTO", group = "Linear Opmode")
-public class SensorRelocationAuto extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "BLUE - SkyStone Sensing Auto", group = "Linear Opmode")
+public class SensorRelocationAutoRed extends LinearOpMode {
 
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
@@ -19,7 +19,7 @@ public class SensorRelocationAuto extends LinearOpMode {
     ElapsedTime runtime = new ElapsedTime();
 
     private final static double TILE_LENGTH = 24, FIELD_LENGTH = 6*TILE_LENGTH;
-    private final static int ALLIANCE = -1;//1 means on red side of field, -1 means blue side of field
+    private final static int ALLIANCE = 1;//1 means on red side of field, -1 means blue
    /// instead turning between every stone -> it goes forward then pause then sense
     @Override
     public void runOpMode() throws InterruptedException {
@@ -40,19 +40,19 @@ public class SensorRelocationAuto extends LinearOpMode {
         rightBackFlywheel = hardwareMap.get(DcMotor.class, "rightBackFlywheel");
 
         waitForStart();
-
         boolean sensed = false;
+
         while (opModeIsActive()) {
 
-            drive(29, 1, 1);
+            drive(30, 1, 1);
             sleep(1000);
-            turn(90,-1*ALLIANCE );
+            turn(90,1*ALLIANCE );
 
                 for (int i = 6; i > 3; i--) {
                     telemetry.addLine(((Integer)(color_sensor.alpha())).toString());
                 telemetry.update();
                 sleep(100);
-                if (color_sensor.alpha() < 950) {
+                if (color_sensor.alpha() < 750) {
                     telemetry.addLine("sensed skystone");
                     telemetry.update();
                     sleep(2000);
@@ -85,9 +85,9 @@ public class SensorRelocationAuto extends LinearOpMode {
                 else {
                     telemetry.addLine("Still looking for SS");
                     telemetry.update();
-                    sleep(1000);
-                    drive(4, 1, 1);
-                    sleep(1000);
+                    sleep(100);
+                    drive(4, -1, 1);
+                    sleep(100);
                     /*turn(90, -1*ALLIANCE);//left turn if on right side, vice versa
                     drive(8, 1, 1);
                     turn(90, 1*ALLIANCE);//take out this line to enter PARTY MODE
@@ -97,13 +97,11 @@ public class SensorRelocationAuto extends LinearOpMode {
             }
 
             if (!sensed) driveWithSkystone(4);
+
             break;
 
         }
     }
-
-    //after getting out of slo-mo mode -- TOO FAST and imprecise
-    //so we changed it to 0.75 rather than 0.5
 
     public void drive(double distance, int direction, double speed) throws InterruptedException {
 
@@ -186,8 +184,8 @@ public class SensorRelocationAuto extends LinearOpMode {
 
     public void driveWithSkystone(int i) throws InterruptedException {
 
-        /*int left = 1;
-        int right = -1;*/
+        int left = 1;
+        int right = -1;
 
         //strafes to right of the SkyStone in middle of next block
 //        turn(90, right*ALLIANCE);//1: switched dir
@@ -212,8 +210,6 @@ public class SensorRelocationAuto extends LinearOpMode {
 
 //        drive(24, -1, 1);
 //        drive(24, 1, 1);
-
-        turn(90, 1*ALLIANCE);
         flywheelIntake();
 
         //move out of the line of stones
@@ -227,7 +223,7 @@ public class SensorRelocationAuto extends LinearOpMode {
 
         flywheelOuttake();
 
-        drive(TILE_LENGTH, -1, 1);
+        drive(TILE_LENGTH, 1, -1);
     }
 
     private static double inchesToCm(double inches) {
