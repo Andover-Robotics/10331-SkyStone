@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "THIS IS ACTUALLY THE ACTUAL AUTO", group = "Linear Opmode")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Blue Alliance SkyStone Sensing", group = "Linear Opmode")
 public class SensorRelocationAuto extends LinearOpMode {
 
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
@@ -44,57 +44,57 @@ public class SensorRelocationAuto extends LinearOpMode {
         boolean sensed = false;
         while (opModeIsActive()) {
 
-            drive(29, 1, 1);
+            drive(36, 1, 1);
             sleep(1000);
-            turn(90,-1*ALLIANCE );
+            turn(90,-1*ALLIANCE);
 
                 for (int i = 6; i > 3; i--) {
                     telemetry.addLine(((Integer)(color_sensor.alpha())).toString());
-                telemetry.update();
-                sleep(100);
-                if (color_sensor.alpha() < 950) {
-                    telemetry.addLine("sensed skystone");
-                    telemetry.update();
-                    sleep(2000);
-
-                    driveWithSkystone(i);
-                    telemetry.addLine("driven with skystone");
                     telemetry.update();
                     sleep(100);
+                    if (color_sensor.alpha() < 950) {
+                        telemetry.addLine("sensed skystone");
+                        telemetry.update();
+                        sleep(2000);
 
-//                    //drive to the next SkyStone
-//                    drive(8 * (9 - i) + 2.5 * TILE_LENGTH, 1, 1);
-//                    telemetry.addLine("driven to next skystone");
-//                    telemetry.update();
-//                    sleep(100);
+                        driveWithSkystone(i);
+                        telemetry.addLine("driven with skystone");
+                        telemetry.update();
+                        sleep(100);
+
+    //                    //drive to the next SkyStone
+    //                    drive(8 * (9 - i) + 2.5 * TILE_LENGTH, 1, 1);
+    //                    telemetry.addLine("driven to next skystone");
+    //                    telemetry.update();
+    //                    sleep(100);
 
 
-//                    driveWithSkystone(i-3);
-//                    telemetry.addLine("driven w/ next skystone");
-//                    telemetry.update();
-//                    sleep(100);
-//
-//                    drive(2.5* TILE_LENGTH, 1, 1);
-//                    telemetry.addLine("Done!");
-//                    telemetry.update();
-//                    sleep(100);
+    //                    driveWithSkystone(i-3);
+    //                    telemetry.addLine("driven w/ next skystone");
+    //                    telemetry.update();
+    //                    sleep(100);
+    //
+    //                    drive(2.5* TILE_LENGTH, 1, 1);
+    //                    telemetry.addLine("Done!");
+    //                    telemetry.update();
+    //                    sleep(100);
 
-                    sensed = true;
-                    break;
+                        sensed = true;
+                        break;
+                    }
+                    else {
+                        telemetry.addLine("Still looking for SS");
+                        telemetry.update();
+                        sleep(1000);
+                        drive(8, 1, 1);
+                        sleep(1000);
+                        /*turn(90, -1*ALLIANCE);//left turn if on right side, vice versa
+                        drive(8, 1, 1);
+                        turn(90, 1*ALLIANCE);//take out this line to enter PARTY MODE
+                        drive(2, 1, 0.5);*/
+                    }
+
                 }
-                else {
-                    telemetry.addLine("Still looking for SS");
-                    telemetry.update();
-                    sleep(1000);
-                    drive(4, 1, 1);
-                    sleep(1000);
-                    /*turn(90, -1*ALLIANCE);//left turn if on right side, vice versa
-                    drive(8, 1, 1);
-                    turn(90, 1*ALLIANCE);//take out this line to enter PARTY MODE
-                    drive(2, 1, 0.5);*/
-                }
-
-            }
 
             if (!sensed) driveWithSkystone(4);
             break;
@@ -109,7 +109,7 @@ public class SensorRelocationAuto extends LinearOpMode {
 
         //DIRECTION: 1 = forwards, -1 = backwards
 
-        speed /= 2;//SLOW MOTION MODE
+        speed *= 0.6;//SLOW MOTION MODE
 
         double num_tiles = distance/TILE_LENGTH;
 
@@ -148,7 +148,7 @@ public class SensorRelocationAuto extends LinearOpMode {
             motor.setPower(direction*-0.5);
         }
 
-        double dps = 97*113/90;//degrees per second
+        double dps = 97*113/90*77/90;//degrees per second
 
         //ex: 60 total degrees /
         //30 degrees per second =
@@ -213,7 +213,7 @@ public class SensorRelocationAuto extends LinearOpMode {
 //        drive(24, -1, 1);
 //        drive(24, 1, 1);
 
-        turn(90, 1*ALLIANCE);
+        turn(90, -1*ALLIANCE);
         flywheelIntake();
 
         //move out of the line of stones

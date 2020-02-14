@@ -71,7 +71,7 @@ public class TurnTester extends LinearOpMode {
             motor.setPower(direction*0.5);
         }
 
-        double dps = 97*113/90;//degrees per second
+        double dps = 97*113/90*77/90;//degrees per second
 
         //ex: 60 total degrees /
         //30 degrees per second =

@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "BLUE - SkyStone Sensing Auto", group = "Linear Opmode")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Red Alliance SkyStone Sensing", group = "Linear Opmode")
 public class SensorRelocationAutoRed extends LinearOpMode {
 
     private static DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
@@ -44,15 +44,15 @@ public class SensorRelocationAutoRed extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            drive(30, 1, 1);
+            drive(39, 1, 1);
             sleep(1000);
             turn(90,1*ALLIANCE );
 
                 for (int i = 6; i > 3; i--) {
                     telemetry.addLine(((Integer)(color_sensor.alpha())).toString());
                 telemetry.update();
-                sleep(100);
-                if (color_sensor.alpha() < 750) {
+                sleep(1000);
+                if (color_sensor.alpha() < 1000) {
                     telemetry.addLine("sensed skystone");
                     telemetry.update();
                     sleep(2000);
@@ -86,7 +86,7 @@ public class SensorRelocationAutoRed extends LinearOpMode {
                     telemetry.addLine("Still looking for SS");
                     telemetry.update();
                     sleep(100);
-                    drive(4, -1, 1);
+                    drive(8, -1, 1);
                     sleep(100);
                     /*turn(90, -1*ALLIANCE);//left turn if on right side, vice versa
                     drive(8, 1, 1);
@@ -146,7 +146,7 @@ public class SensorRelocationAutoRed extends LinearOpMode {
             motor.setPower(direction*-0.5);
         }
 
-        double dps = 97*113/90;//degrees per second
+        double dps = 97*113/90*77/90;//degrees per second
 
         //ex: 60 total degrees /
         //30 degrees per second =
@@ -187,6 +187,8 @@ public class SensorRelocationAutoRed extends LinearOpMode {
         int left = 1;
         int right = -1;
 
+        turn(90, -1*ALLIANCE);
+
         //strafes to right of the SkyStone in middle of next block
 //        turn(90, right*ALLIANCE);//1: switched dir
 //        drive(13, 1);
@@ -223,7 +225,7 @@ public class SensorRelocationAutoRed extends LinearOpMode {
 
         flywheelOuttake();
 
-        drive(TILE_LENGTH, 1, -1);
+        drive(TILE_LENGTH, -1, 1);
     }
 
     private static double inchesToCm(double inches) {
