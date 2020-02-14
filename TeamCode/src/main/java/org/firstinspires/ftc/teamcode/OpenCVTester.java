@@ -10,7 +10,4 @@ public class OpenCVTester extends LinearOpMode {
     public void runOpMode() {
 
     }
-
-    //Test Commit
-
 }
