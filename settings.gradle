@@ -1,1 +1,3 @@
-include ':RobotCore', ':Blocks', ':RobotServer', ':FtcRobotController', ':FtcCommon', ':Hardware', ':Inspection', ':ARC-Core', ':TeamCode', ':OpenRC'
+include ':RobotCore', ':Blocks', ':RobotServer', ':FtcRobotController', ':FtcCommon', ':Hardware', ':Inspection', ':ARC-Core', ':TeamCode', ':OpenRC', ':app'
+project(':app').projectDir = new File('OpenCvProject/app')
+include ':openCVLibrary343'
