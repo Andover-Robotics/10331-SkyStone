@@ -44,15 +44,15 @@ public class SensorRelocationAutoRed extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            drive(39, 1, 1);
+            drive(34, 1, 1);
             sleep(1000);
-            turn(90,1*ALLIANCE );
+            turn(75,1);
 
                 for (int i = 6; i > 3; i--) {
                     telemetry.addLine(((Integer)(color_sensor.alpha())).toString());
                 telemetry.update();
                 sleep(1000);
-                if (color_sensor.alpha() < 1000) {
+                if (color_sensor.alpha() < 1025) {
                     telemetry.addLine("sensed skystone");
                     telemetry.update();
                     sleep(2000);
@@ -86,7 +86,7 @@ public class SensorRelocationAutoRed extends LinearOpMode {
                     telemetry.addLine("Still looking for SS");
                     telemetry.update();
                     sleep(100);
-                    drive(8, -1, 1);
+                    drive(8, -1*ALLIANCE, 1);
                     sleep(100);
                     /*turn(90, -1*ALLIANCE);//left turn if on right side, vice versa
                     drive(8, 1, 1);
@@ -110,6 +110,8 @@ public class SensorRelocationAutoRed extends LinearOpMode {
         speed /= 2;//SLOW MOTION MODE
 
         double num_tiles = distance/TILE_LENGTH;
+        telemetry.addLine("number of tiles: " + num_tiles);
+        telemetry.update();
 
         //creates array of motors and loops through for efficiency
         DcMotor[] motors = {leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive};
@@ -121,6 +123,8 @@ public class SensorRelocationAutoRed extends LinearOpMode {
         }
 
         double tps = 1.8*speed;//tiles per second -- need to test
+        telemetry.addLine("tiles per second"+tps);
+        telemetry.update();
 
         //ex: 6 total tiles /
         //3 tiles per second =
@@ -225,7 +229,12 @@ public class SensorRelocationAutoRed extends LinearOpMode {
 
         flywheelOuttake();
 
-        drive(TILE_LENGTH, -1, 1);
+        drive(8 * (11 - i) + TILE_LENGTH*2.5, -1, 1);
+        turn(90, -1*ALLIANCE);
+
+        flywheelIntake();
+
+        /*drive(TILE_LENGTH, -1, 1);*/
     }
 
     private static double inchesToCm(double inches) {
