@@ -46,9 +46,9 @@ public class SensorRelocationAutoRed extends LinearOpMode {
 
             drive(34, 1, 1);
             sleep(1000);
-            turn(75,1);
+            turn(90,1);
 
-                for (int i = 6; i > 3; i--) {
+                for (int i = 6; i > 4; i--) {
                     telemetry.addLine(((Integer)(color_sensor.alpha())).toString());
                 telemetry.update();
                 sleep(1000);

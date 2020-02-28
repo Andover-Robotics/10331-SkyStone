@@ -46,9 +46,9 @@ public class SensorRelocationAutoBlue extends LinearOpMode {
 
             drive(34, 1, 1);
             sleep(1000);
-            turn(75,1);
+            turn(90,1);
 
-            for (int i = 6; i > 3; i--) {
+            for (int i = 6; i > 4; i--) {
                 telemetry.addLine(((Integer)(color_sensor.alpha())).toString());
                 telemetry.update();
                 sleep(1000);
@@ -191,7 +191,7 @@ public class SensorRelocationAutoBlue extends LinearOpMode {
         int left = 1;
         int right = -1;
 
-        turn(90, -1*ALLIANCE);
+        turn(90,  1*ALLIANCE);
 
         //strafes to right of the SkyStone in middle of next block
 //        turn(90, right*ALLIANCE);//1: switched dir
@@ -233,6 +233,13 @@ public class SensorRelocationAutoBlue extends LinearOpMode {
         turn(90, -1*ALLIANCE);
 
         flywheelIntake();
+
+        turn(90, 1*ALLIANCE);
+        drive(8 * (11 - i) + TILE_LENGTH*2.5, 1, 1);
+
+        flywheelOuttake();
+
+        drive(4,-1,1);
 
         /*drive(TILE_LENGTH, -1, 1);*/
     }
