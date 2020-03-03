@@ -56,7 +56,7 @@ public class BobaTeleOp extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive;
     //NEW FLYWHEELS
-    private DcMotor leftFrontFlywheel, leftBackFlywheel, rightFrontFlywheel, rightBackFlywheel;
+    private DcMotor leftFrontFlywheel, rightFrontFlywheel;
     // boolean to see if Flywheels are running
     private boolean runFlywheelsForward = false, runFlywheelsBackwards = false, stop=false, runServosForward=false, runServosBackward=false;
     //Using ARC-Core's Mecanum Drive class, we initialized a Mecanum Drive as seen below
@@ -80,9 +80,7 @@ public class BobaTeleOp extends OpMode {
         rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackDrive");
 
         leftFrontFlywheel = hardwareMap.get(DcMotor.class, "leftFrontFlywheel");
-        leftBackFlywheel = hardwareMap.get(DcMotor.class, "leftBackFlywheel");
         rightFrontFlywheel = hardwareMap.get(DcMotor.class, "rightFrontFlywheel");
-        rightBackFlywheel = hardwareMap.get(DcMotor.class, "rightBackFlywheel");
 
         leftServo = hardwareMap.get(Servo.class, "foundationMoverServoL");
         rightServo = hardwareMap.get(Servo.class, "foundationMoverServoR");
@@ -100,14 +98,10 @@ public class BobaTeleOp extends OpMode {
         rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
         // Flywheels move backwards to move blocks inward
         rightFrontFlywheel.setDirection(DcMotor.Direction.REVERSE);
-        rightBackFlywheel.setDirection(DcMotor.Direction.REVERSE);
-        leftBackFlywheel.setDirection(DcMotor.Direction.REVERSE);
         leftFrontFlywheel.setDirection(DcMotor.Direction.REVERSE);
 
         leftFrontFlywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        leftBackFlywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightFrontFlywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightBackFlywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
         // Tell the driver that initialization is complete.
@@ -128,10 +122,7 @@ public class BobaTeleOp extends OpMode {
     public void start() {
         runtime.reset();
         leftFrontFlywheel.setPower(0);
-        leftBackFlywheel.setPower(0);
         rightFrontFlywheel.setPower(0);
-        rightBackFlywheel.setPower(0);
-
     }
 
     /*
@@ -144,7 +135,7 @@ public class BobaTeleOp extends OpMode {
     public void loop() {
         count++;
         telemetry.addLine(((Integer)count).toString());
-        telemetry.addData("LF Flywheel Power: ",  leftFrontFlywheel.getPower());
+        telemetry.addData("LF WHEEL power: ",  leftFrontDrive.getPower());
         telemetry.addData("RT Flywheel Power: ", rightFrontFlywheel.getPower());
         // Choose to drive using either Tank Mode, or POV Mode
         // Comment out the method that's not used.  The default below is POV.
@@ -179,8 +170,11 @@ public class BobaTeleOp extends OpMode {
 
 
         //capstone
+        boolean runCapstone = false;
         if (gamepad2.y) {
-            capstoneServo.setPosition(0.5);
+            runCapstone = !runCapstone;
+            if (runCapstone) capstoneServo.setPosition(0.0);
+            else capstoneServo.setPosition(0.5);
         }
 
         //foundation mover RB is down and LB is up
@@ -193,10 +187,6 @@ public class BobaTeleOp extends OpMode {
             runServosForward = true;
             runServosBackward = false;
         }
-
-
-
-
 
         //run flywheels at full power when bool true
 
@@ -257,12 +247,17 @@ public class BobaTeleOp extends OpMode {
         if (!runServosBackward && !runServosForward) {
             //do nothing??
         }else if (runServosForward) {
-            leftServo.setPosition(0.5);
-            rightServo.setPosition(0.5);
+            leftServo.setPosition(0.25);
+            rightServo.setPosition(0.25);
         }else {
-            leftServo.setPosition(0.0);
-            rightServo.setPosition(0.0);
+            leftServo.setPosition(0.75);
+            rightServo.setPosition(0.75);
         }
+
+        telemetry.addLine("Left Servo: "+ leftServo.getPosition());
+        telemetry.addLine("Right Servo: "+ rightServo.getPosition());
+        telemetry.addLine("Capstone: " + capstoneServo.getPosition());
+        telemetry.update();
 
 
         // Tank Mode uses one stick to control each wheel.
