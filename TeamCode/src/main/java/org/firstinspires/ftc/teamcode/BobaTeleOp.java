@@ -130,6 +130,7 @@ public class BobaTeleOp extends OpMode {
      */
 
     int count = 0;
+    boolean runCapstone = false;
 
     @Override
     public void loop() {
@@ -170,11 +171,14 @@ public class BobaTeleOp extends OpMode {
 
 
         //capstone
-        boolean runCapstone = false;
         if (gamepad2.y) {
+            telemetry.addData("Capstone moving...", runCapstone);
+            telemetry.update();
             runCapstone = !runCapstone;
             if (runCapstone) capstoneServo.setPosition(0.0);
             else capstoneServo.setPosition(0.5);
+            telemetry.addLine("Capstone Position" + capstoneServo.getPosition());
+            telemetry.update();
         }
 
         //foundation mover RB is down and LB is up

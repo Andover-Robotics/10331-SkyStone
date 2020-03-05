@@ -26,86 +26,78 @@ public class FoundationMovingAuto extends LinearOpMode {
     private Servo leftServo, rightServo, capstoneServo;
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
 
         runtime.reset();
 
         telemetry.addLine("This started");
-        ColorSensor color_sensor;
-        color_sensor = hardwareMap.get(ColorSensor.class, "color_sensor");
+        ColorSensor color_sensor = hardwareMap.get(ColorSensor.class, "color_sensor");
         leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontDrive");
         leftBackDrive = hardwareMap.get(DcMotor.class, "leftBackDrive");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontDrive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackDrive");
         leftFrontFlywheel = hardwareMap.get(DcMotor.class, "leftFrontFlywheel");
+        leftBackFlywheel = hardwareMap.get(DcMotor.class, "leftBackFlywheel");
         rightFrontFlywheel = hardwareMap.get(DcMotor.class, "rightFrontFlywheel");
-        leftServo = hardwareMap.get(Servo.class, "foundationMoverServoL");
-        rightServo = hardwareMap.get(Servo.class, "foundationMoverServoR");
-        capstoneServo = hardwareMap.get(Servo.class, "capstoneServo");
+        rightBackFlywheel = hardwareMap.get(DcMotor.class, "rightBackFlywheel");
 
         //driveTrain = MecanumDrive.fromCrossedMotors(leftFrontDrive, rightFrontDrive, leftBackDrive, rightBackDrive, this, 89, 1120);
         //driveTrain.setDefaultDrivePower(1);
 
         waitForStart();
-
-        //moving the foundation
-
         /*
-        * drive backward 32 inches
-        * put down foundation movers
-        * move back 12inches (test with TeleOp)
-        * turn foundation (and robot!) 90 degrees
-        * drive backward to park on line
-        * */
+         * drive backward 32 inches
+         * put down foundation movers
+         * move forward 12inches (test with TeleOp)
+         * turn foundation (and robot!) 90 degrees
+         * drive backward to park on line
+         * */
 
-        //parking over the line
         while (opModeIsActive()) {
 
-            leftFrontDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-            leftBackDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+            drive(32,-1);
+            leftServo.setPosition(0.25);
+            rightServo.setPosition(0.25);
+            drive(12,1);
+            turn(90,ALLIANCE*-1);
+            drive(TILE_LENGTH, 1);
 
-            leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition());
-            rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition());
-            leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition());
-            rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition());
-            drive(12);
-
-            }
+            break;
 
         }
 
+    }
 
-    public static void drive(double distance){
+
+    public void drive(double distance, int direction) throws InterruptedException {
+
+        //DIRECTION: 1 = forwards, -1 = backwards
+
+        double num_tiles = distance/TILE_LENGTH;
 
         //creates array of motors and loops through for efficiency
-        DcMotor[] motors = {leftFrontDrive, rightFrontDrive, leftBackDrive, rightBackDrive};
+        DcMotor[] motors = {leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive};
 
-        //you actually need to set the mode to stop_and_reset_encoder BEFORE setting target position
-        for (DcMotor motor : motors) {
-            motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        }
-
-        leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(distance)));
-        leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(distance)));
-        rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(distance)));
-        rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition() + (int) findTotalTicks(ticksPerMecanum, mecanumCircumference, inchesToCm(distance)));
-
-        //then after setting position, you ALSO set power AND set mode to run to position
         for (int i = 0; i < motors.length; i++) {
             DcMotor motor = motors[i];
-            if (i == 0) motor.setPower(1);
-            else motor.setPower(0.66);
-            motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            if (i < 2) motor.setPower(-1*direction);
+            else motor.setPower(1*direction);
         }
 
-        while (leftFrontDrive.isBusy() && leftBackDrive.isBusy() && rightFrontDrive.isBusy() && rightBackDrive.isBusy()) {
-            //does nothing -- this is effectively the sleep function but based on a conditional
-        }
+        double tps = 1.8;//tiles per second -- need to test
+
+        //ex: 6 total tiles /
+        //3 tiles per second =
+        //2 total seconds
+
+        double seconds = num_tiles/tps;
+        double millis = seconds*1000;
+        Thread.sleep((long)millis);
 
         for (DcMotor motor : motors) {
             motor.setPower(0);
-            motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
+
     }
 
     public static double findTotalTicks(int ticksPerRev, double circumference, double intendedDist) {
@@ -126,11 +118,34 @@ public class FoundationMovingAuto extends LinearOpMode {
 
         return finalTicks;
     }
+    public void turn (double degrees, int direction) throws InterruptedException {
+        //direction = 1 to turn ccw, -1 to turn cw
 
+        //creates array of motors and loops through for efficiency
+        DcMotor[] motors = {leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive};
+
+        for (DcMotor motor : motors) {
+            motor.setPower(direction*-0.5);
+        }
+
+        double dps = 97*113/90*77/90;//degrees per second
+
+        //ex: 60 total degrees /
+        //30 degrees per second =
+        //2 total seconds
+
+        double seconds = degrees/dps;
+        double millis = seconds*1000;
+        Thread.sleep((long)millis);
+
+        for (DcMotor motor : motors) {
+            motor.setPower(0);
+        }
+
+    }
 
     private static double inchesToCm(double inches) {
-        return inches * 2.54;
+        return inches*2.54;
     }
 
 }
-
