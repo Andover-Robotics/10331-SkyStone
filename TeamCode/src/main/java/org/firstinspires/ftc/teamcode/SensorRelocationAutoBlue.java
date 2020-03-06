@@ -35,9 +35,9 @@ public class SensorRelocationAutoBlue extends LinearOpMode {
         rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontDrive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackDrive");
         leftFrontFlywheel = hardwareMap.get(DcMotor.class, "leftFrontFlywheel");
-        leftBackFlywheel = hardwareMap.get(DcMotor.class, "leftBackFlywheel");
+        //leftBackFlywheel = hardwareMap.get(DcMotor.class, "leftBackFlywheel");
         rightFrontFlywheel = hardwareMap.get(DcMotor.class, "rightFrontFlywheel");
-        rightBackFlywheel = hardwareMap.get(DcMotor.class, "rightBackFlywheel");
+        //rightBackFlywheel = hardwareMap.get(DcMotor.class, "rightBackFlywheel");
 
         waitForStart();
         boolean sensed = false;
@@ -55,12 +55,10 @@ public class SensorRelocationAutoBlue extends LinearOpMode {
                 if (color_sensor.alpha() < 1025) {
                     telemetry.addLine("sensed skystone");
                     telemetry.update();
-                    sleep(2000);
 
                     driveWithSkystone(i);
                     telemetry.addLine("driven with skystone");
                     telemetry.update();
-                    sleep(100);
 
 //                    //drive to the next SkyStone
 //                    drive(8 * (9 - i) + 2.5 * TILE_LENGTH, 1, 1);
@@ -85,9 +83,9 @@ public class SensorRelocationAutoBlue extends LinearOpMode {
                 else {
                     telemetry.addLine("Still looking for SS");
                     telemetry.update();
-                    sleep(100);
+
                     drive(8, -1*ALLIANCE, 1);
-                    sleep(100);
+
                     /*turn(90, -1*ALLIANCE);//left turn if on right side, vice versa
                     drive(8, 1, 1);
                     turn(90, 1*ALLIANCE);//take out this line to enter PARTY MODE
@@ -107,7 +105,7 @@ public class SensorRelocationAutoBlue extends LinearOpMode {
 
         //DIRECTION: 1 = forwards, -1 = backwards
 
-        speed /= 2;//SLOW MOTION MODE
+        speed *= 0.6;//SLOW MOTION MODE
 
         double num_tiles = distance/TILE_LENGTH;
         telemetry.addLine("number of tiles: " + num_tiles);
@@ -150,7 +148,7 @@ public class SensorRelocationAutoBlue extends LinearOpMode {
             motor.setPower(direction*-0.5);
         }
 
-        double dps = 97*113/90*77/90;//degrees per second
+        double dps = 97*113/90*77/90*90/85;//degrees per second
 
         //ex: 60 total degrees /
         //30 degrees per second =
@@ -191,6 +189,7 @@ public class SensorRelocationAutoBlue extends LinearOpMode {
         int left = 1;
         int right = -1;
 
+        drive(2,1,1);
         turn(90,  1*ALLIANCE);
 
         //strafes to right of the SkyStone in middle of next block
@@ -233,13 +232,13 @@ public class SensorRelocationAutoBlue extends LinearOpMode {
         turn(90, -1*ALLIANCE);
 
         flywheelIntake();
-
+        drive(TILE_LENGTH, -1, 1);
         turn(90, 1*ALLIANCE);
-        drive(8 * (11 - i) + TILE_LENGTH*2.5, 1, 1);
+        drive(8 * (11 - i) + TILE_LENGTH*2.5, 1, 1.5);
 
         flywheelOuttake();
 
-        drive(4,-1,1);
+        drive(11,-1,1.5);
 
         /*drive(TILE_LENGTH, -1, 1);*/
     }

@@ -37,9 +37,9 @@ public class TurnTester extends LinearOpMode {
         rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontDrive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackDrive");
         leftFrontFlywheel = hardwareMap.get(DcMotor.class, "leftFrontFlywheel");
-        leftBackFlywheel = hardwareMap.get(DcMotor.class, "leftBackFlywheel");
+        //leftBackFlywheel = hardwareMap.get(DcMotor.class, "leftBackFlywheel");
         rightFrontFlywheel = hardwareMap.get(DcMotor.class, "rightFrontFlywheel");
-        rightBackFlywheel = hardwareMap.get(DcMotor.class, "rightBackFlywheel");
+        //rightBackFlywheel = hardwareMap.get(DcMotor.class, "rightBackFlywheel");
 
         //driveTrain = MecanumDrive.fromCrossedMotors(leftFrontDrive, rightFrontDrive, leftBackDrive, rightBackDrive, this, 89, 1120);
         //driveTrain.setDefaultDrivePower(1);
